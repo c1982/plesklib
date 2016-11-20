@@ -5,6 +5,8 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Net;
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Xml;
     using System.Xml.Serialization;
@@ -82,26 +84,75 @@
             return deSerializeObject;
         }
 
-        private string ExecuteWebRequest(string xmlRequest)
+        private string SendHttpRequest(string meesage)
         {
-            //Send
-            //Get Response
+            var returnSrting = String.Empty;
+            var bytes = new ASCIIEncoding().GetBytes(meesage);            
+
+            //Bypass SSL validation.
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate
+                                                                            (object sender, X509Certificate certificate, X509Chain chain,
+                                                                            SslPolicyErrors sslPolicyErrors)
+            { return true; };
             
-            return String.Empty;
+            var request = (HttpWebRequest)WebRequest.Create(this.apiurl);
+
+            Auth(ref request);
+
+            request.Timeout = 30000;
+            request.ContentLength = meesage.Length;
+
+            using (var requestStream = request.GetRequestStream())
+            {
+                requestStream.Write(bytes, 0, bytes.Length);
+                requestStream.Close();                
+            }
+
+            using (StreamReader sr = new StreamReader(request.GetResponse().GetResponseStream()))
+            {
+                returnSrting = sr.ReadToEnd();
+            }
+
+            return returnSrting;
+        }
+
+        private PleskResponse ExecuteWebRequest(PacketAdd packet)
+        {
+            var response = new PleskResponse();
+
+            try
+            {
+                var message = SerializeObjectToXmlString<PacketAdd>(packet);
+
+                response.ResponseContent = SendHttpRequest(message);
+                response.Errcode = 0;                
+                response.Status = "ok";
+            }
+            catch (Exception ex)
+            {
+                response.Status = "error";
+                response.Errcode = 9715;
+                response.Errtext = ex.Message;
+            }
+
+            return response;
         }
 
         #region Actions
-        public PacketAddResult SiteAdd(string webspaceid, string name, string username, string password, HostingProperty[] properties)
+        public PacketAddResult SiteAdd(string webspaceid, string name, HostingProperty[] properties)
         {
             var prop = new List<HostingProperty>();
-            prop.AddRange(properties);
 
-            var result = new PacketAddResult();
+            if(properties != null)
+                prop.AddRange(properties);
             
             var add = new PacketAdd();
             add.Site.Add.GenSetup.Name = name;
             add.Site.Add.GenSetup.WebSpaceId = webspaceid;
             add.Site.Add.Hosting.Properties = prop.ToArray();
+
+            var response = ExecuteWebRequest(add);
+            var result = DeSerializeObject<PacketAddResult>(response.ResponseContent);
 
             return result;
         }
