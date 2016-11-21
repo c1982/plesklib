@@ -24,18 +24,19 @@
 
         }
 
-        public PleskClient(string hostname, string username, string password, string port = "8443")
+        public PleskClient(string hostname, string username, string password, string port = "8443", bool https = true)
         {
             this.hostname = hostname;
             this.username = username;
             this.password = password;
             this.port = port;
             
-            this.apiurl = String.Format("https://{0}:{1}/enterprise/control/agent.php", hostname, port);
+            this.apiurl = String.Format("{2}://{0}:{1}/enterprise/control/agent.php", hostname, port, https ? "https" : "http");
         }
 
         private void Auth(ref HttpWebRequest req)
         {
+            req.Timeout = 30000;
             req.Method = "POST";
             req.Headers.Add("HTTP_AUTH_LOGIN", username);
             req.Headers.Add("HTTP_AUTH_PASSWD", password);
@@ -86,7 +87,7 @@
 
         private string SendHttpRequest(string meesage)
         {
-            var returnSrting = String.Empty;
+            var result = String.Empty;
             var bytes = new ASCIIEncoding().GetBytes(meesage);            
 
             //Bypass SSL validation.
@@ -96,10 +97,7 @@
             { return true; };
             
             var request = (HttpWebRequest)WebRequest.Create(this.apiurl);
-
-            Auth(ref request);
-
-            request.Timeout = 30000;
+            Auth(ref request);            
             request.ContentLength = meesage.Length;
 
             using (var requestStream = request.GetRequestStream())
@@ -108,53 +106,72 @@
                 requestStream.Close();                
             }
 
-            using (StreamReader sr = new StreamReader(request.GetResponse().GetResponseStream()))
-            {
-                returnSrting = sr.ReadToEnd();
-            }
-
-            return returnSrting;
+            result = GetResponseContent(request);
+            return result;
         }
 
-        private PleskResponse ExecuteWebRequest(PacketAdd packet)
+        private string GetResponseContent(HttpWebRequest request)
         {
-            var response = new PleskResponse();
+            using (StreamReader sr = new StreamReader(request.GetResponse().GetResponseStream()))
+            {
+                return sr.ReadToEnd();
+            }
+        }
+
+        private Toutput ExecuteWebRequest<Tinput, Toutput>(Tinput apiRequest)
+        {
+            var response = new ApiResponse();
+            response.Status = false;
+
+            var result = Activator.CreateInstance(typeof(Toutput));
 
             try
             {
-                var message = SerializeObjectToXmlString<PacketAdd>(packet);
+                var message = SerializeObjectToXmlString<Tinput>(apiRequest);
+                response.ResponseXmlString = SendHttpRequest(message);                
+                result = DeSerializeObject<Toutput>(response.ResponseXmlString);
 
-                response.ResponseContent = SendHttpRequest(message);
-                response.Errcode = 0;                
-                response.Status = "ok";
+                response.Status = true;
             }
             catch (Exception ex)
             {
-                response.Status = "error";
-                response.Errcode = 9715;
-                response.Errtext = ex.Message;
+                response.Message = ex.Message;
+                response.MessageDetails = ex.StackTrace;
             }
 
-            return response;
+            if (!response.Status)
+            {
+                var output = result as IResponseResult;
+                output.SaveResult(response);                
+            }
+
+            return (Toutput)result;
         }
 
         #region Actions
-        public PacketAddResult SiteAdd(string webspaceid, string name, HostingProperty[] properties)
-        {
+        public SiteAddResult SiteAdd(string name, string webspaceid, HostingProperty[] properties)
+        {              
             var prop = new List<HostingProperty>();
 
             if(properties != null)
                 prop.AddRange(properties);
             
-            var add = new PacketAdd();
+            var add = new SiteAddPacket();
             add.Site.Add.GenSetup.Name = name;
             add.Site.Add.GenSetup.WebSpaceId = webspaceid;
             add.Site.Add.Hosting.Properties = prop.ToArray();
 
-            var response = ExecuteWebRequest(add);
-            var result = DeSerializeObject<PacketAddResult>(response.ResponseContent);
+            return ExecuteWebRequest<SiteAddPacket, SiteAddResult>(add);
+            
+        }
 
-            return result;
+        public SiteAliasPacketResult CreateAlias(int siteId, string name)
+        {
+            var add = new SiteAliasPacket();
+            add.siteAlias.createSiteAlias.SiteId = siteId;
+            add.siteAlias.createSiteAlias.AliasName = name;
+
+            return ExecuteWebRequest<SiteAliasPacket, SiteAliasPacketResult>(add);
         }
         #endregion
 

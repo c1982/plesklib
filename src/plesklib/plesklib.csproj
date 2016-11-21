@@ -40,10 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Packet.cs" />
-    <Compile Include="Models\PleskResponse.cs" />
+    <Compile Include="Models\IResponseResult.cs" />
+    <Compile Include="Models\ResponseResult.cs" />
+    <Compile Include="Models\SiteAdd.cs" />
+    <Compile Include="Models\ApiResponse.cs" />
+    <Compile Include="Models\SiteAddResult.cs" />
+    <Compile Include="Models\SiteAlias.cs" />
+    <Compile Include="Models\SiteAliasResult.cs" />
     <Compile Include="PleskClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

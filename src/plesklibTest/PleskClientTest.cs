@@ -8,11 +8,13 @@
     [TestClass]
     public class PleskClientTest
     {
-        private readonly string HOSTNAME = "localhost";
-        private readonly string USERNAME = "admin";
-        private readonly string PASSWORD = "passw0rd";
+        public static readonly string HOSTNAME = "localhost";
+        public static readonly string USERNAME = "admin";
+        public static readonly string PASSWORD = "passw0rd";
 
-        private readonly string ADD_PACKAGE_XML = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+        private PleskClient client = new PleskClient(HOSTNAME, USERNAME, PASSWORD);
+
+        public static readonly string ADD_SITE_XML = @"<?xml version=""1.0"" encoding=""UTF-8""?>
                                                     <packet>
                                                       <site>
                                                        <add>
@@ -116,32 +118,63 @@
                                                       </site>
                                                     </packet>";
 
+        public static readonly string ADD_SITE_RESULT = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+                                                    <packet version=""1.6.8.0"">
+                                                      <site>
+                                                        <add>
+                                                          <result>
+                                                            <status>ok</status>
+                                                            <id>57</id>
+                                                            <guid>ed5de3a1-2d73-4dfa-9cee-4609afaccf6a</guid>
+                                                          </result>
+                                                        </add>
+                                                      </site>
+                                                    </packet>";
+
         [TestMethod]
         public void DeserializationPacketObject()
         {
-            var client = new PleskClient(HOSTNAME, USERNAME, PASSWORD);
-            var packet = client.DeSerializeObject<PacketAdd>(ADD_PACKAGE_XML);
 
-            Assert.IsNotNull(packet);
-            Assert.IsInstanceOfType(packet, typeof(PacketAdd));          
-            Assert.AreEqual(packet.Site.Add.GenSetup.Name, "sample.tst");
-            Assert.AreEqual(packet.Site.Add.GenSetup.WebSpaceId, "10");
+            var result = client.DeSerializeObject<SiteAddPacket>(ADD_SITE_XML);
 
-            var virtualHostArraySize = packet.Site.Add.Hosting.Properties.Length;
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(SiteAddPacket));
+            Assert.AreEqual(result.Site.Add.GenSetup.Name, "sample.tst");
+            Assert.AreEqual(result.Site.Add.GenSetup.WebSpaceId, "10");
+
+            var virtualHostArraySize = result.Site.Add.Hosting.Properties.Length;
 
             Assert.AreEqual(virtualHostArraySize, 22);
         }
 
-        public void AddSiteTest()
+
+        [TestMethod]
+        public void IResponsible_SaveResultTest()
         {
-            var client = new PleskClient(HOSTNAME, USERNAME, PASSWORD);
+            var apiresponse = new ApiResponse();
+            apiresponse.Message = "Error Message";
+            apiresponse.Status = false;            
 
-            var features = new List<HostingProperty>();
-            features.Add(new HostingProperty() { Name = "", Value = "" });
+            object obJResult = new SiteAddResult();
 
-            var result = client.SiteAdd("10", "domain.com", "domain.com", "p@ssw0rd", features.ToArray());
+            var a = obJResult as IResponseResult;
+            a.SaveResult(apiresponse);            
+            
+            var result = obJResult as SiteAddResult;
 
-            Assert.AreEqual(result.site.addResult.result.status, "success");
+            Assert.AreEqual(result.site.addResult.result.status, "error");
+            Assert.AreEqual(result.site.addResult.result.ErrorText, apiresponse.Message);
+            Assert.AreEqual(result.site.addResult.result.ErrorCode, 999);            
+        }
+
+        [TestMethod]
+        public void AddSiteResultDeserializationTest()
+        {
+            var result = client.DeSerializeObject<SiteAddResult>(ADD_SITE_RESULT);
+
+            Assert.AreEqual(result.site.addResult.result.status, "ok");
+            Assert.AreEqual(result.site.addResult.result.Id, "57");
+            Assert.AreEqual(result.site.addResult.result.guid, "ed5de3a1-2d73-4dfa-9cee-4609afaccf6a");
         }
     }
 }

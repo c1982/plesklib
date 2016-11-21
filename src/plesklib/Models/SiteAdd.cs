@@ -4,9 +4,9 @@
     using System.Xml.Serialization;
     
     [XmlRoot("packet")]
-    public class PacketAdd
+    public class SiteAddPacket
     {
-        public PacketAdd()
+        public SiteAddPacket()
         {
             this.Site = new Site();
         }
@@ -14,53 +14,6 @@
         [XmlElement("site")]        
         public Site Site { get; set; }
 
-    }
-
-    [XmlRoot("packet")]
-    public class PacketAddResult
-    {
-        public PacketAddResult()
-        {
-            this.site = new SiteResult() { addResult = new AddResult { result = new ResponseResult { } } };
-        }
-
-        [XmlElement("site")]
-        public SiteResult site { get; set; }
-    }
-
-    public class SiteResult
-    {
-        public SiteResult()
-        {
-            this.addResult = new AddResult();
-        }
-
-        [XmlElement("add")]
-        public AddResult addResult { get; set; }
-    }
-
-    public class AddResult
-    {
-        public AddResult()
-        {
-            this.result = new ResponseResult();
-        }
-
-        [XmlElement("add")]
-        public ResponseResult result { get; set; }
-    }
-
-
-    public class ResponseResult
-    {
-        [XmlElement("status")]
-        public string status { get; set; }
-
-        [XmlElement("id")]
-        public string Id { get; set; }
-
-        [XmlElement("guid")]
-        public string guid { get; set; }
     }
 
     public class Site
