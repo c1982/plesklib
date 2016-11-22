@@ -150,7 +150,7 @@
             return (Toutput)result;
         }
 
-        #region Actions
+        #region Site (Domain)
         public SiteAddResult CreateSite(string name, string webspaceid, HostingProperty[] properties)
         {              
             var prop = new List<HostingProperty>();
@@ -166,7 +166,13 @@
             return ExecuteWebRequest<SiteAddPacket, SiteAddResult>(add);            
         }
 
+        public SiteDelResult DeleteSite(string name)
+        {
+            var del = new SiteDelPacket();
+            del.site.del.filter.Name = name;
 
+            return ExecuteWebRequest<SiteDelPacket, SiteDelResult>(del);
+        }
 
         public SiteGetResult GetSite(string name)
         {
@@ -175,14 +181,83 @@
 
             return ExecuteWebRequest<SiteGet, SiteGetResult>(get);
         }
+        #endregion
 
-        public SiteAliasPacketResult CreateAlias(int siteId, string name)
+        #region Alias
+        public SiteAliasPacketResult CreateAlias(int siteId, string name, bool enableWeb = true, bool enableMail = false, bool enableTomcat = false)
         {
             var add = new SiteAliasPacket();
             add.siteAlias.createSiteAlias.SiteId = siteId;
             add.siteAlias.createSiteAlias.AliasName = name;
+            add.siteAlias.createSiteAlias.pref.web = enableWeb ? "1" : "0";
+            add.siteAlias.createSiteAlias.pref.mail = enableMail ? "1" : "0";
+            add.siteAlias.createSiteAlias.pref.tomcat = enableTomcat ? "1" : "0";
 
             return ExecuteWebRequest<SiteAliasPacket, SiteAliasPacketResult>(add);
+        }
+
+        public SiteAliasDelResult DeleteAlias(string name)
+        {
+            var del = new SiteAliasDelPacket();
+            del.site.delete.filter.Name = name;
+
+            return ExecuteWebRequest<SiteAliasDelPacket, SiteAliasDelResult>(del);
+        }
+
+        #endregion
+
+        #region Subdomain
+        public SubdomainAddResult CreateSubdomain(string parent, string name, string homedir, string ftpusername, string ftppassword, 
+                                                                                                    bool ssi = false, bool ssiHtml = false)
+        {
+            var add = new SubdomainAddPacket();
+            add.subdomain.add.parentName = parent;
+            add.subdomain.add.subdomainName = name;
+            add.subdomain.add.homeDir.Value = homedir;
+            add.subdomain.add.ftpUsername.Value = ftpusername;
+            add.subdomain.add.ftpPassword.Value = ftppassword;
+            add.subdomain.add.ssi.Value = ssi ? "true" : "false";
+            add.subdomain.add.ssiHtml.Value = ssiHtml ? "true" : "false";
+
+            return ExecuteWebRequest<SubdomainAddPacket, SubdomainAddResult>(add);
+        }
+
+        public SubdomainDeleteResult DeleteSubdomain(string name)
+        {
+            var del = new SubdomainDeletePacket();
+            del.subdomain.del.filter.Name = name;
+
+            return ExecuteWebRequest<SubdomainDeletePacket, SubdomainDeleteResult>(del);
+        }
+        #endregion
+
+        #region Protected Dir
+        public ProtectedDirAddResult CreateProtectedDir(int siteId, string name, string headerText, 
+                                                                    bool ssl = false, bool nonssl = false, bool cgi = false)
+        {
+            if (String.IsNullOrEmpty(headerText))
+                headerText = "Protected Area";
+
+            var add = new ProtectedDirAddPacket();
+            add.protectedDir.add.siteId = siteId;
+            add.protectedDir.add.Name = name;
+            add.protectedDir.add.Header = headerText;
+            add.protectedDir.add.location.cgi.Value = cgi ? "true" : "false";
+            add.protectedDir.add.location.ssl.Value = ssl ? "true" : "false";
+            add.protectedDir.add.location.nonssl.Value = nonssl ? "true" : "false";
+
+            return ExecuteWebRequest<ProtectedDirAddPacket, ProtectedDirAddResult>(add);
+        }
+
+        public ProtectedDirAddUserResult CreateProtectedDirUser(int pdid, string username, string password, string passwordType = "plain")
+        {
+            var add = new ProtectedDirAddUserPacket();
+            add.protectedDir.addUser.Id = pdid;
+            add.protectedDir.addUser.username = username;
+            add.protectedDir.addUser.password = password;
+            add.protectedDir.addUser.passwordType = passwordType;
+
+            return ExecuteWebRequest<ProtectedDirAddUserPacket, ProtectedDirAddUserResult>(add);
         }
         #endregion
     }

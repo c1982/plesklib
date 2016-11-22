@@ -4,7 +4,7 @@
     using System.Xml.Serialization;
 
     [XmlRoot("packet")]
-    public class SiteGetResult
+    public class SiteGetResult : IResponseResult
     {
         public SiteGetResult()
         {
@@ -13,6 +13,11 @@
 
         [XmlElement("site")]
         public SiteGetResultSite site { get; set; }
+
+        public void SaveResult(ApiResponse response)
+        {
+            
+        }
     }
 
     public class SiteGetResultSite

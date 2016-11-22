@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>plesklib</RootNamespace>
-    <AssemblyName>plesklib</AssemblyName>
+    <AssemblyName>maestropanel.plesklib</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,15 +41,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\IResponseResult.cs" />
+    <Compile Include="Models\ProtectedDirAdd.cs" />
+    <Compile Include="Models\ProtectedDirAddResult.cs" />
+    <Compile Include="Models\ProtectedDirAddUser.cs" />
+    <Compile Include="Models\ProtectedDirAddUserResult.cs" />
     <Compile Include="Models\ResponseResult.cs" />
     <Compile Include="Models\SiteAdd.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\SiteAddResult.cs" />
     <Compile Include="Models\SiteAlias.cs" />
+    <Compile Include="Models\SiteAliasDel.cs" />
+    <Compile Include="Models\SiteAliasDelResult.cs" />
     <Compile Include="Models\SiteAliasResult.cs" />
     <Compile Include="Models\SiteDel.cs" />
+    <Compile Include="Models\SiteDelResult.cs" />
     <Compile Include="Models\SiteGet.cs" />
     <Compile Include="Models\SiteGetResult.cs" />
+    <Compile Include="Models\SubdomainAddResult.cs" />
+    <Compile Include="Models\SubdomainAdd.cs" />
+    <Compile Include="Models\SubdomainDelete.cs" />
+    <Compile Include="Models\SubdomainDeleteResult.cs" />
     <Compile Include="PleskClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
