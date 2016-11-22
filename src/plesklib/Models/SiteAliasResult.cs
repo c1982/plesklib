@@ -1,6 +1,7 @@
-﻿using System.Xml.Serialization;
-namespace plesklib.Models
+﻿namespace plesklib.Models
 {
+    using System.Xml.Serialization;
+
     [XmlRoot("packet")]
     public class SiteAliasPacketResult
     {

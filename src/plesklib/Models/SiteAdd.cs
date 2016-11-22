@@ -13,7 +13,6 @@
 
         [XmlElement("site")]        
         public Site Site { get; set; }
-
     }
 
     public class Site

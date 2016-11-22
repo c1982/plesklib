@@ -7,7 +7,7 @@
     {
         public SiteAddResult()
         {
-            this.site = new SiteResult() { addResult = new AddResult { result = new ResponseResult { } } };
+            this.site = new SiteResult();
         }
 
         [XmlElement("site")]

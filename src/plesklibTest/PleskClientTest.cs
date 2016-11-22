@@ -3,7 +3,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using plesklib;
     using plesklib.Models;
-    using System.Collections.Generic;
 
     [TestClass]
     public class PleskClientTest

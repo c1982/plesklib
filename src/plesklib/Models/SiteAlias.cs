@@ -5,12 +5,23 @@
     [XmlRoot("packet")]
     public class SiteAliasPacket
     {
+
+        public SiteAliasPacket()
+        {
+            this.siteAlias = new SiteAlias();
+        }
+
         [XmlElement("site-alias")]
         public SiteAlias siteAlias { get; set; }
     }
     
     public class SiteAlias
     {
+        public SiteAlias()
+        {
+            this.createSiteAlias = new SiteAliasCreate();
+        }
+
         [XmlElement("create")]
         public SiteAliasCreate createSiteAlias { get; set; }
     }

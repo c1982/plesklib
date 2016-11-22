@@ -47,6 +47,9 @@
     <Compile Include="Models\SiteAddResult.cs" />
     <Compile Include="Models\SiteAlias.cs" />
     <Compile Include="Models\SiteAliasResult.cs" />
+    <Compile Include="Models\SiteDel.cs" />
+    <Compile Include="Models\SiteGet.cs" />
+    <Compile Include="Models\SiteGetResult.cs" />
     <Compile Include="PleskClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

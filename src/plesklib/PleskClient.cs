@@ -142,14 +142,16 @@
             if (!response.Status)
             {
                 var output = result as IResponseResult;
-                output.SaveResult(response);                
+
+                if(output != null)
+                    output.SaveResult(response);                
             }
 
             return (Toutput)result;
         }
 
         #region Actions
-        public SiteAddResult SiteAdd(string name, string webspaceid, HostingProperty[] properties)
+        public SiteAddResult CreateSite(string name, string webspaceid, HostingProperty[] properties)
         {              
             var prop = new List<HostingProperty>();
 
@@ -161,8 +163,17 @@
             add.Site.Add.GenSetup.WebSpaceId = webspaceid;
             add.Site.Add.Hosting.Properties = prop.ToArray();
 
-            return ExecuteWebRequest<SiteAddPacket, SiteAddResult>(add);
-            
+            return ExecuteWebRequest<SiteAddPacket, SiteAddResult>(add);            
+        }
+
+
+
+        public SiteGetResult GetSite(string name)
+        {
+            var get = new SiteGet();
+            get.filter.Name = name;
+
+            return ExecuteWebRequest<SiteGet, SiteGetResult>(get);
         }
 
         public SiteAliasPacketResult CreateAlias(int siteId, string name)
@@ -174,7 +185,5 @@
             return ExecuteWebRequest<SiteAliasPacket, SiteAliasPacketResult>(add);
         }
         #endregion
-
-
     }
 }
