@@ -150,17 +150,49 @@
             return (Toutput)result;
         }
 
+
+        #region Webspace
+        public WebSpaceAddResult CreateWebSpace(string name, string ipaddr, string username, string password)
+        {
+            var prop = new List<HostingProperty>();
+            prop.Add(new HostingProperty() { Name = "ftp_login", Value = username });
+            prop.Add(new HostingProperty() { Name = "ftp_password", Value = password });
+
+            var add = new WebspaceAddPacket();
+            add.webspace.add.genSetup.name = name;
+            add.webspace.add.genSetup.ipaddress = ipaddr;
+            add.webspace.add.hosting.Properties = prop.ToArray();
+
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
+        }
+        #endregion
+
         #region Site (Domain)
-        public SiteAddResult CreateSite(string name, string webspaceid, HostingProperty[] properties)
+        public SiteAddResult CreateSite(string name, int webspaceId, bool sslSupport = true, bool dedicatedAppPool = false, bool enableClassicAsp = false , 
+                                                     bool enableDotNet = false, bool enableSsi = true, bool enablePhp = false, 
+                                                     bool enableCgi = false, bool enablePerl = false, bool enablePython = false, 
+                                                     bool enableFastCgi = false, bool enableMiva = false, string Webstat = "none", 
+                                                     bool enableErrorDocs = true, bool enableWebDeploy = false)
         {              
             var prop = new List<HostingProperty>();
-
-            if(properties != null)
-                prop.AddRange(properties);
+            prop.Add(new HostingProperty() { Name="ssl", Value = sslSupport ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "iis_app_pool", Value = dedicatedAppPool ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "asp", Value = enableClassicAsp ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "asp_dot_net", Value = enableDotNet ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "ssi", Value = enableSsi ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "php", Value = enablePhp ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "cgi", Value = enableCgi ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "perl", Value = enablePerl ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "python", Value = enablePython ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "fastcgi", Value = enableFastCgi ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "miva", Value = enableMiva ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "webstat", Value = Webstat }); // none | webalizer | awstats
+            prop.Add(new HostingProperty() { Name = "errdocs", Value = enableErrorDocs ? "true" : "false" });
+            prop.Add(new HostingProperty() { Name = "web_deploy", Value = enableWebDeploy ? "true" : "false" });
             
             var add = new SiteAddPacket();
             add.Site.Add.GenSetup.Name = name;
-            add.Site.Add.GenSetup.WebSpaceId = webspaceid;
+            add.Site.Add.GenSetup.WebSpaceId = webspaceId;
             add.Site.Add.Hosting.Properties = prop.ToArray();
 
             return ExecuteWebRequest<SiteAddPacket, SiteAddResult>(add);            
@@ -260,5 +292,29 @@
             return ExecuteWebRequest<ProtectedDirAddUserPacket, ProtectedDirAddUserResult>(add);
         }
         #endregion
+
+        #region Ftp Account
+        public FtpUserAddResult AddFtpAccount(string name, string username, string password, string home, int quota)
+        {
+            var add = new FtpUserAddPacket();
+            add.ftpUser.add.wespacename = name;
+            add.ftpUser.add.username = username;
+            add.ftpUser.add.password = password;
+            add.ftpUser.add.home = home;
+            add.ftpUser.add.quota = quota;
+
+            return ExecuteWebRequest<FtpUserAddPacket, FtpUserAddResult>(add);
+        }
+
+        public FtpUserDelResult DeleteFtpAccount(string name, string username)
+        {
+            var del = new FtpUserDelPacket();
+            del.ftpUser.del.filter.Name = username;
+            del.ftpUser.del.filter.webspaceName = name;
+
+            return ExecuteWebRequest<FtpUserDelPacket, FtpUserDelResult>(del);
+        }
+        #endregion
+
     }
 }

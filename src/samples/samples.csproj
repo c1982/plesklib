@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C9812B99-86A4-41BC-88AE-1C45F469EE51}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{2F60A3BF-A942-45E9-80D5-256CB2F6DA64}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>plesklib</RootNamespace>
-    <AssemblyName>maestropanel.plesklib</AssemblyName>
+    <RootNamespace>samples</RootNamespace>
+    <AssemblyName>samples</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -20,19 +22,21 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,38 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\FtpUserAdd.cs" />
-    <Compile Include="Models\FtpUserAddResult.cs" />
-    <Compile Include="Models\FtpUserDel.cs" />
-    <Compile Include="Models\FtpUserDelResult.cs" />
-    <Compile Include="Models\IResponseResult.cs" />
-    <Compile Include="Models\ProtectedDirAdd.cs" />
-    <Compile Include="Models\ProtectedDirAddResult.cs" />
-    <Compile Include="Models\ProtectedDirAddUser.cs" />
-    <Compile Include="Models\ProtectedDirAddUserResult.cs" />
-    <Compile Include="Models\ResponseResult.cs" />
-    <Compile Include="Models\SiteAdd.cs" />
-    <Compile Include="Models\ApiResponse.cs" />
-    <Compile Include="Models\SiteAddResult.cs" />
-    <Compile Include="Models\SiteAlias.cs" />
-    <Compile Include="Models\SiteAliasDel.cs" />
-    <Compile Include="Models\SiteAliasDelResult.cs" />
-    <Compile Include="Models\SiteAliasResult.cs" />
-    <Compile Include="Models\SiteDel.cs" />
-    <Compile Include="Models\SiteDelResult.cs" />
-    <Compile Include="Models\SiteGet.cs" />
-    <Compile Include="Models\SiteGetResult.cs" />
-    <Compile Include="Models\SubdomainAddResult.cs" />
-    <Compile Include="Models\SubdomainAdd.cs" />
-    <Compile Include="Models\SubdomainDelete.cs" />
-    <Compile Include="Models\SubdomainDeleteResult.cs" />
-    <Compile Include="Models\WebspaceAdd.cs" />
-    <Compile Include="Models\WebSpaceAddResult.cs" />
-    <Compile Include="PleskClient.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\plesklib\plesklib.csproj">
+      <Project>{c9812b99-86a4-41bc-88ae-1c45f469ee51}</Project>
+      <Name>plesklib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

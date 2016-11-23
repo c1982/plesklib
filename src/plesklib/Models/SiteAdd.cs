@@ -47,7 +47,7 @@
         public string Name { get; set; }
 
         [XmlElement("webspace-id")]
-        public string WebSpaceId { get; set; }
+        public int WebSpaceId { get; set; }
     }
 
     public class Hosting

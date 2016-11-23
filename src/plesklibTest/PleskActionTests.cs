@@ -70,7 +70,7 @@
                 fakeServer.Expect.Post("/enterprise/control/agent.php", "").Returns(System.Net.HttpStatusCode.OK, PleskClientTest.ADD_SITE_RESULT);
                 fakeServer.Start();
 
-                var result = client.CreateSite("demo.com", "57", null);
+                var result = client.CreateSite("demo.com", true, true, true , true, true, true, true, true, true, true, true, "none", true, true);
 
                 Debug.WriteLine(result.site.addResult.result.ErrorText);
 
