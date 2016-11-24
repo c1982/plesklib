@@ -62,6 +62,19 @@
                                                                           </site>
                                                                         </packet>";
 
+        private readonly string WEBSPACE_RESULT= @"<?xml version=""1.0"" encoding=""UTF-8""?>
+                                                    <packet version=""1.6.7.0"">
+                                                      <webspace>
+                                                        <add>
+                                                          <result>
+                                                            <status>ok</status>
+                                                            <id>4</id>
+                                                            <guid>5ff343c1-a40b-4305-8986-2f27c240db7e</guid>
+                                                          </result>
+                                                        </add>
+                                                      </webspace>
+                                                    </packet>";
+
         [TestMethod]
         public void Add_Site_Test()
         {
@@ -70,13 +83,32 @@
                 fakeServer.Expect.Post("/enterprise/control/agent.php", "").Returns(System.Net.HttpStatusCode.OK, PleskClientTest.ADD_SITE_RESULT);
                 fakeServer.Start();
 
-                var result = client.CreateSite("demo.com", true, true, true , true, true, true, true, true, true, true, true, "none", true, true);
+                var result = client.CreateSite("demo.com",1, true, true, true , true, true, true, true, true, true, true, true, "none", true, true);
 
                 Debug.WriteLine(result.site.addResult.result.ErrorText);
 
                 Assert.AreEqual(result.site.addResult.result.status, "ok");
                 Assert.AreEqual(result.site.addResult.result.Id, "57");
                 Assert.AreEqual(result.site.addResult.result.guid, "ed5de3a1-2d73-4dfa-9cee-4609afaccf6a");
+            }
+        }
+
+
+        [TestMethod]
+        public void Add_WebSpace_Test()
+        {
+            using (var fakeServer = new FakeServer(BASE_PORT))
+            {
+                fakeServer.Expect.Post("/enterprise/control/agent.php", "").Returns(System.Net.HttpStatusCode.OK, WEBSPACE_RESULT);
+                fakeServer.Start();
+
+                var result = client.CreateWebSpace("domain.com", "192.168.0.1", "ftplogin", "password");
+
+                Debug.WriteLine(result.webspace.add.result.ErrorText);
+
+                Assert.AreEqual(result.webspace.add.result.status, "ok");
+                Assert.AreEqual(result.webspace.add.result.Id, "4");
+                Assert.AreEqual(result.webspace.add.result.guid, "5ff343c1-a40b-4305-8986-2f27c240db7e");
             }
         }
 

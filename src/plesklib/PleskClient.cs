@@ -150,7 +150,6 @@
             return (Toutput)result;
         }
 
-
         #region Webspace
         public WebSpaceAddResult CreateWebSpace(string name, string ipaddr, string username, string password)
         {
