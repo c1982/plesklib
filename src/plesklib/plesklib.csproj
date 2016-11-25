@@ -48,6 +48,10 @@
     <Compile Include="Models\DatabaseGetResult.cs" />
     <Compile Include="Models\DatabaseUserAdd.cs" />
     <Compile Include="Models\DatabaseUserAddResult.cs" />
+    <Compile Include="Models\DatabaseUserDel.cs" />
+    <Compile Include="Models\DatabaseUserDelResult.cs" />
+    <Compile Include="Models\DatabaseUserGet.cs" />
+    <Compile Include="Models\DatabaseUserGetResult.cs" />
     <Compile Include="Models\FtpUserAdd.cs" />
     <Compile Include="Models\FtpUserAddResult.cs" />
     <Compile Include="Models\FtpUserDel.cs" />
