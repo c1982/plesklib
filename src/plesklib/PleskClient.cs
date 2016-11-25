@@ -10,6 +10,7 @@
     using System.Text;
     using System.Xml;
     using System.Xml.Serialization;
+    using System.Linq;
 
     public class PleskClient
     {
@@ -341,6 +342,84 @@
             add.database.add.type = databaseType;
 
             return ExecuteWebRequest<DatabaseAddPacket, DatabaseAddResult>(add);
+        }
+
+        public DatabaseGetResult GetDatabaseList(string name)
+        {
+            var getDb = new DatabaseGetPacket();
+            getDb.database.getDb.filter.webspaceName = name;
+
+            return ExecuteWebRequest<DatabaseGetPacket, DatabaseGetResult>(getDb);
+        }
+
+        public DatabaseDelResult DeleteDatabase(string name, string databaseName)
+        {
+            var result = new DatabaseDelResult();
+            result.database.delDb.result.status = "error";
+
+            var list = GetDatabaseList(name);
+
+            if (list.databaseList.Any())
+            {
+                var currentDb = list.databaseList.Where(m => m.result.name == databaseName).FirstOrDefault();
+
+                if (currentDb != null)
+                {
+                    var del = new DatabaseDelPacket();
+                    del.database.del.filter.dbid = currentDb.result.Id;
+
+                    result = ExecuteWebRequest<DatabaseDelPacket, DatabaseDelResult>(del);
+                }
+                else
+                {
+                    result.database.delDb.result.ErrorText = "Database not found in this domain";
+                    result.database.delDb.result.ErrorCode = 999;
+                }
+            }
+            else
+            {                                
+                result.database.delDb.result.ErrorText = "No databases in this domain";                
+                result.database.delDb.result.ErrorCode = 999;
+            }
+
+            return result;
+
+        }
+
+        public DatabaseUserAddResult CreateDatabaseUser(string name, string databaseName, string username, string password, string passwordType = "plain", string role ="readWrite")
+        {
+            var result = new DatabaseUserAddResult();
+            var list = GetDatabaseList(name);
+
+            if (!list.databaseList.Any())
+            {
+                result.database.addDbUser.result.ErrorText = "No databases in this domain";
+                result.database.addDbUser.result.ErrorCode = 999;
+
+                return result;
+            }
+
+            var currentDb = list.databaseList.Where(m => m.result.name == databaseName).FirstOrDefault();
+
+            if (currentDb == null)
+            {
+                result.database.addDbUser.result.ErrorText = "Database not found in this domain";
+                result.database.addDbUser.result.ErrorCode = 999;
+
+                return result;
+            }
+
+            var add = new DatabaseUserAddPacket();
+            add.database.addUser.dbId = currentDb.result.Id;
+            add.database.addUser.dbServerId = currentDb.result.dbsServerId;
+            add.database.addUser.webSpaceId = currentDb.result.webSpaceId;
+            add.database.addUser.login = username;
+            add.database.addUser.password = password;
+            add.database.addUser.passwordType = passwordType;
+            add.database.addUser.role = role;
+
+            return ExecuteWebRequest<DatabaseUserAddPacket, DatabaseUserAddResult>(add);
+
         }
         #endregion
 

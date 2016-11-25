@@ -42,6 +42,12 @@
   <ItemGroup>
     <Compile Include="Models\DatabaseAdd.cs" />
     <Compile Include="Models\DatabaseAddResult.cs" />
+    <Compile Include="Models\DatabaseDel.cs" />
+    <Compile Include="Models\DatabaseDelResult.cs" />
+    <Compile Include="Models\DatabaseGet.cs" />
+    <Compile Include="Models\DatabaseGetResult.cs" />
+    <Compile Include="Models\DatabaseUserAdd.cs" />
+    <Compile Include="Models\DatabaseUserAddResult.cs" />
     <Compile Include="Models\FtpUserAdd.cs" />
     <Compile Include="Models\FtpUserAddResult.cs" />
     <Compile Include="Models\FtpUserDel.cs" />
