@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\DatabaseAdd.cs" />
+    <Compile Include="Models\DatabaseAddResult.cs" />
     <Compile Include="Models\FtpUserAdd.cs" />
     <Compile Include="Models\FtpUserAddResult.cs" />
     <Compile Include="Models\FtpUserDel.cs" />
