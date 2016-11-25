@@ -44,6 +44,8 @@
     <Compile Include="Models\FtpUserAddResult.cs" />
     <Compile Include="Models\FtpUserDel.cs" />
     <Compile Include="Models\FtpUserDelResult.cs" />
+    <Compile Include="Models\IPAddrGet.cs" />
+    <Compile Include="Models\IPAddrGetResult.cs" />
     <Compile Include="Models\IResponseResult.cs" />
     <Compile Include="Models\ProtectedDirAdd.cs" />
     <Compile Include="Models\ProtectedDirAddResult.cs" />
@@ -67,6 +69,8 @@
     <Compile Include="Models\SubdomainDeleteResult.cs" />
     <Compile Include="Models\WebspaceAdd.cs" />
     <Compile Include="Models\WebSpaceAddResult.cs" />
+    <Compile Include="Models\WebSpaceDel.cs" />
+    <Compile Include="Models\WebSpaceDelResult.cs" />
     <Compile Include="PleskClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

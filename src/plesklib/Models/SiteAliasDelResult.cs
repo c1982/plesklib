@@ -3,7 +3,7 @@
     using System.Xml.Serialization;
 
     [XmlRoot("packet")]
-    public class SiteAliasDelResult
+    public class SiteAliasDelResult : IResponseResult
     {
         public SiteAliasDelResult()
         {
@@ -12,6 +12,11 @@
 
         [XmlElement("site-alias")]
         public SiteAliasSiteResult siteAlias { get; set; }
+
+        public void SaveResult(ApiResponse response)
+        {
+            this.siteAlias.delete.result = response.ToErrorResult();
+        }
     }
 
     public class SiteAliasSiteResult

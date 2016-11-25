@@ -43,10 +43,10 @@
 
     public class WebSpaceGenSetup
     {
-        [XmlElement("hosting")]
+        [XmlElement("name")]
         public string name { get; set; }
 
-        [XmlElement("hosting")]
+        [XmlElement("ipaddress")]
         public string ipaddress { get; set; }
     }
 

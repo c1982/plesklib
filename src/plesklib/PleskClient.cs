@@ -128,6 +128,7 @@
             try
             {
                 var message = SerializeObjectToXmlString<Tinput>(apiRequest);
+
                 response.ResponseXmlString = SendHttpRequest(message);                
                 result = DeSerializeObject<Toutput>(response.ResponseXmlString);
 
@@ -163,6 +164,14 @@
             add.webspace.add.hosting.Properties = prop.ToArray();
 
             return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
+        }
+
+        public WebSpaceDelResult DeleteWebSpace(string name)
+        {
+            var del = new WebSpaceDelPacket();
+            del.webspace.del.filter.Name = name;
+
+            return ExecuteWebRequest<WebSpaceDelPacket, WebSpaceDelResult>(del);
         }
         #endregion
 
@@ -234,7 +243,6 @@
 
             return ExecuteWebRequest<SiteAliasDelPacket, SiteAliasDelResult>(del);
         }
-
         #endregion
 
         #region Subdomain
@@ -312,6 +320,27 @@
             del.ftpUser.del.filter.webspaceName = name;
 
             return ExecuteWebRequest<FtpUserDelPacket, FtpUserDelResult>(del);
+        }
+        #endregion
+
+        #region ip addresss
+        public IPAddrGetResult GetIPAddressList()
+        {
+            var _get = new IPAddrGetPacket();
+            _get.ip.get = new IPAddrGetGetNode();
+
+            return ExecuteWebRequest<IPAddrGetPacket, IPAddrGetResult>(_get);
+        }
+        #endregion
+
+        #region Database
+        public DatabaseAddResult CreateDatabase(string name, string databaseName, string databaseType)
+        {
+            var add = new DatabaseAddPacket();
+            add.database.add.name = databaseName;
+            add.database.add.type = databaseType;
+
+            return ExecuteWebRequest<DatabaseAddPacket, DatabaseAddResult>(add);
         }
         #endregion
 

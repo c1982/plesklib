@@ -3,6 +3,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using plesklib;
     using plesklib.Models;
+    using System.Collections.Generic;
 
     [TestClass]
     public class PleskClientTest
@@ -174,6 +175,23 @@
             Assert.AreEqual(result.site.addResult.result.status, "ok");
             Assert.AreEqual(result.site.addResult.result.Id, "57");
             Assert.AreEqual(result.site.addResult.result.guid, "ed5de3a1-2d73-4dfa-9cee-4609afaccf6a");
+        }
+
+        [TestMethod]
+        public void Serialize_WebSpacePacket_Type_Test()
+        {
+            var prop = new List<HostingProperty>();
+            prop.Add(new HostingProperty() { Name = "ftp_login", Value = "login" });
+            prop.Add(new HostingProperty() { Name = "ftp_password", Value = "password" });
+
+            var add = new WebspaceAddPacket();
+            add.webspace.add.genSetup.name = "domain.com";
+            add.webspace.add.genSetup.ipaddress = "10.6.6.5";
+            add.webspace.add.hosting.Properties = prop.ToArray();
+
+            var xml_string = client.SerializeObjectToXmlString<WebspaceAddPacket>(add);
+
+            Assert.IsNotNull(xml_string);
         }
     }
 }

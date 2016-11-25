@@ -3,7 +3,7 @@
     using System.Xml.Serialization;
 
     [XmlRoot("packet")]
-    public class ProtectedDirAddUserResult
+    public class ProtectedDirAddUserResult : IResponseResult
     {
         public ProtectedDirAddUserResult()
         {
@@ -12,6 +12,11 @@
 
         [XmlElement("protected-dir")]
         public ProtectedDirProtectResult protectedDir { get; set; }
+
+        public void SaveResult(ApiResponse response)
+        {
+            this.protectedDir.addUser.result = response.ToErrorResult();
+        }
     }
 
     public class ProtectedDirProtectResult
