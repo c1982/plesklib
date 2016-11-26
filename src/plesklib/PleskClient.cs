@@ -419,7 +419,59 @@
             add.database.addUser.role = role;
 
             return ExecuteWebRequest<DatabaseUserAddPacket, DatabaseUserAddResult>(add);
+        }
 
+        public DatabaseUserGetResult GetDatabaseUserList(string name, string databaseName)
+        {
+            var result = new DatabaseUserGetResult();
+
+            var list = GetDatabaseList(name);
+
+            if (!list.databaseList.Any())                            
+                return result;
+            
+            var currentDb = list.databaseList.Where(m => m.result.name == databaseName).FirstOrDefault();
+
+            if (currentDb == null)            
+                return result;
+            
+            var getuser = new DatabaseUserGetPacket();
+            getuser.database.users.filter.databaseId = currentDb.result.Id;
+            
+            return ExecuteWebRequest<DatabaseUserGetPacket, DatabaseUserGetResult>(getuser);
+        }
+        
+        public DatabaseUserDelResult DeleteDatabaseUser(string name, string databaseName, string username)
+        {
+            var result = new DatabaseUserDelResult();
+
+            var list = GetDatabaseUserList(name, databaseName);
+
+            if (!list.database.users.Any())
+            {
+                result.database.del.result.status = "error";
+                result.database.del.result.ErrorCode = 999;
+                result.database.del.result.ErrorText = "No users in this database";
+
+                return result;
+            }
+
+            var currentUser = list.database.users.Where(m => m.login == username).FirstOrDefault();
+
+            if (currentUser == null)
+            {
+                result.database.del.result.status = "error";
+                result.database.del.result.ErrorCode = 999;
+                result.database.del.result.ErrorText = "User not found";
+
+                return result;
+            }
+
+            var deleteUser = new DatabaseUserDelPacket();
+            deleteUser.database.del.filter.databaseId = currentUser.databaseId;
+            deleteUser.database.del.filter.userId = currentUser.Id;
+
+            return ExecuteWebRequest<DatabaseUserDelPacket, DatabaseUserDelResult>(deleteUser);
         }
         #endregion
 

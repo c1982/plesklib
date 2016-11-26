@@ -140,7 +140,7 @@
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(SiteAddPacket));
             Assert.AreEqual(result.Site.Add.GenSetup.Name, "sample.tst");
-            Assert.AreEqual(result.Site.Add.GenSetup.WebSpaceId, "10");
+            Assert.AreEqual(result.Site.Add.GenSetup.WebSpaceId, 10);
 
             var virtualHostArraySize = result.Site.Add.Hosting.Properties.Length;
 
