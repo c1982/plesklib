@@ -52,6 +52,8 @@
     <Compile Include="Models\DatabaseUserDelResult.cs" />
     <Compile Include="Models\DatabaseUserGet.cs" />
     <Compile Include="Models\DatabaseUserGetResult.cs" />
+    <Compile Include="Models\DatabaseUserSet.cs" />
+    <Compile Include="Models\DatabaseUserSetResult.cs" />
     <Compile Include="Models\FtpUserAdd.cs" />
     <Compile Include="Models\FtpUserAddResult.cs" />
     <Compile Include="Models\FtpUserDel.cs" />
