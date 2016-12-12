@@ -83,7 +83,7 @@
                 fakeServer.Expect.Post("/enterprise/control/agent.php", "").Returns(System.Net.HttpStatusCode.OK, PleskClientTest.ADD_SITE_RESULT);
                 fakeServer.Start();
 
-                var result = client.CreateSite("demo.com",1, true, true, true , true, true, true, true, true, true, true, true, "none", true, true);
+                var result = client.CreateSite(1, "domain.com", null);
 
                 Debug.WriteLine(result.site.addResult.result.ErrorText);
 
@@ -102,7 +102,7 @@
                 fakeServer.Expect.Post("/enterprise/control/agent.php", "").Returns(System.Net.HttpStatusCode.OK, WEBSPACE_RESULT);
                 fakeServer.Start();
 
-                var result = client.CreateWebSpace("domain.com", "192.168.0.1", "ftplogin", "password");
+                var result = client.CreateWebSpace("domain.com", "192.168.0.1", "ftplogin", "password", null);
 
                 Debug.WriteLine(result.webspace.add.result.ErrorText);
 

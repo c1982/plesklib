@@ -153,16 +153,19 @@
         }
 
         #region Webspace
-        public WebSpaceAddResult CreateWebSpace(string name, string ipaddr, string username, string password)
+        public WebSpaceAddResult CreateWebSpace(string name, string ipaddr, string username, string password, List<HostingProperty> properties)
         {
             var prop = new List<HostingProperty>();
             prop.Add(new HostingProperty() { Name = "ftp_login", Value = username });
             prop.Add(new HostingProperty() { Name = "ftp_password", Value = password });
 
+            if (properties != null)            
+                prop.AddRange(properties);
+            
             var add = new WebspaceAddPacket();
             add.webspace.add.genSetup.name = name;
             add.webspace.add.genSetup.ipaddress = ipaddr;
-            add.webspace.add.hosting.Properties = prop.ToArray();
+            add.webspace.add.hosting.Properties = prop.ToArray();            
 
             return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
         }
@@ -177,27 +180,27 @@
         #endregion
 
         #region Site (Domain)
-        public SiteAddResult CreateSite(string name, int webspaceId, bool sslSupport = true, bool dedicatedAppPool = false, bool enableClassicAsp = false , 
-                                                     bool enableDotNet = false, bool enableSsi = true, bool enablePhp = false, 
-                                                     bool enableCgi = false, bool enablePerl = false, bool enablePython = false, 
-                                                     bool enableFastCgi = false, bool enableMiva = false, string Webstat = "none", 
-                                                     bool enableErrorDocs = true, bool enableWebDeploy = false)
+        public SiteAddResult CreateSite(int webspaceId, string name, List<HostingProperty> properties)
         {              
             var prop = new List<HostingProperty>();
-            prop.Add(new HostingProperty() { Name="ssl", Value = sslSupport ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "iis_app_pool", Value = dedicatedAppPool ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "asp", Value = enableClassicAsp ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "asp_dot_net", Value = enableDotNet ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "ssi", Value = enableSsi ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "php", Value = enablePhp ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "cgi", Value = enableCgi ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "perl", Value = enablePerl ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "python", Value = enablePython ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "fastcgi", Value = enableFastCgi ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "miva", Value = enableMiva ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "webstat", Value = Webstat }); // none | webalizer | awstats
-            prop.Add(new HostingProperty() { Name = "errdocs", Value = enableErrorDocs ? "true" : "false" });
-            prop.Add(new HostingProperty() { Name = "web_deploy", Value = enableWebDeploy ? "true" : "false" });
+
+            if (properties != null)
+                prop.AddRange(properties);
+
+            //prop.Add(new HostingProperty() { Name= "ssl", Value = sslSupport ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "iis_app_pool", Value = dedicatedAppPool ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "asp", Value = enableClassicAsp ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "asp_dot_net", Value = enableDotNet ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "ssi", Value = enableSsi ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "php", Value = enablePhp ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "cgi", Value = enableCgi ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "perl", Value = enablePerl ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "python", Value = enablePython ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "fastcgi", Value = enableFastCgi ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "miva", Value = enableMiva ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "webstat", Value = Webstat }); // none | webalizer | awstats
+            //prop.Add(new HostingProperty() { Name = "errdocs", Value = enableErrorDocs ? "true" : "false" });
+            //prop.Add(new HostingProperty() { Name = "web_deploy", Value = enableWebDeploy ? "true" : "false" });
             
             var add = new SiteAddPacket();
             add.Site.Add.GenSetup.Name = name;
@@ -247,8 +250,7 @@
         #endregion
 
         #region Subdomain
-        public SubdomainAddResult CreateSubdomain(string parent, string name, string homedir, string ftpusername, string ftppassword, 
-                                                                                                    bool ssi = false, bool ssiHtml = false)
+        public SubdomainAddResult CreateSubdomain(string parent, string name, string homedir, string ftpusername, string ftppassword, bool ssi = false, bool ssiHtml = false)
         {
             var add = new SubdomainAddPacket();
             add.subdomain.add.parentName = parent;
@@ -261,7 +263,7 @@
 
             return ExecuteWebRequest<SubdomainAddPacket, SubdomainAddResult>(add);
         }
-
+        
         public SubdomainDeleteResult DeleteSubdomain(string name)
         {
             var del = new SubdomainDeletePacket();
@@ -324,7 +326,7 @@
         }
         #endregion
 
-        #region ip addresss
+        #region IP Addresses
         public IPAddrGetResult GetIPAddressList()
         {
             var _get = new IPAddrGetPacket();
@@ -472,6 +474,39 @@
             deleteUser.database.del.filter.userId = currentUser.Id;
 
             return ExecuteWebRequest<DatabaseUserDelPacket, DatabaseUserDelResult>(deleteUser);
+        }
+
+        public DatabaseUserSetResult ChangeDatabaseUserPassword(string name, string databaseName, string username, string newpassword)
+        {
+            var result = new DatabaseUserSetResult();
+
+            var list = GetDatabaseUserList(name, databaseName);
+
+            if (!list.database.users.Any())
+            {
+                result.database.setDbUser.result.status = "error";
+                result.database.setDbUser.result.ErrorCode = 999;
+                result.database.setDbUser.result.ErrorText = "No users in this database";
+
+                return result;
+            }
+
+            var currentUser = list.database.users.Where(m => m.login == username).FirstOrDefault();
+
+            if (currentUser == null)
+            {
+                result.database.setDbUser.result.status = "error";
+                result.database.setDbUser.result.ErrorCode = 999;
+                result.database.setDbUser.result.ErrorText = "User not found";
+
+                return result;
+            }
+
+            var changePass = new DatabaseUserSetPacket();
+            changePass.database.setDbUser.databaseUserId = currentUser.Id;
+            changePass.database.setDbUser.password = newpassword;
+
+            return ExecuteWebRequest<DatabaseUserSetPacket, DatabaseUserSetResult>(changePass);
         }
         #endregion
 

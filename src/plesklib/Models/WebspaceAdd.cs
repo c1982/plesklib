@@ -46,7 +46,7 @@
         [XmlElement("name")]
         public string name { get; set; }
 
-        [XmlElement("ipaddress")]
+        [XmlElement("ip_address")]
         public string ipaddress { get; set; }
     }
 
@@ -60,5 +60,8 @@
         [XmlArray("vrt_hst")]
         [XmlArrayItem("property")]
         public HostingProperty[] Properties{ get; set; }
+
+        //[XmlElement("ip_address")]
+        //public string ipaddress { get; set; }
     }    
 }

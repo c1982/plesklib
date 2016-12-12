@@ -1,7 +1,9 @@
 ﻿namespace samples
 {
     using plesklib;
+    using plesklib.Models;
     using System;
+    using System.Collections.Generic;
 
     class Program
     {
@@ -24,12 +26,28 @@
             //    Console.WriteLine(result.site.addResult.result.Id);
             //}
 
-            var result = client.CreateWebSpace("domdon.com", "192.168.2.136", "domdon.com", "Osman12!");
+            var result = client.GetIPAddressList();
+            if (result.ip.get.result.status == "ok")
+            {
+                foreach (var item in result.ip.get.result.ipinfo)
+                {
+                    Console.WriteLine(item.ipaddress);
+                }
+            }
+            
+            //var list = new List<HostingProperty>();
+            //list.Add(new HostingProperty() { Name = "php", Value = "false" });
+            //list.Add(new HostingProperty() { Name = "ssi", Value = "false" });
+            //list.Add(new HostingProperty() { Name = "asp", Value = "true" });
+            //list.Add(new HostingProperty() { Name = "asp_dot_net", Value = "false" });
+            //list.Add(new HostingProperty() { Name = "cgi", Value = "true" });
 
-            Console.WriteLine(result.webspace.add.result.status);
-            Console.WriteLine(result.webspace.add.result.ErrorText);
-            Console.WriteLine(result.webspace.add.result.guid);
-            Console.WriteLine(result.webspace.add.result.Id);
+            //var result = client.CreateWebSpace("demo3.com", "192.168.2.136", "demo3.com", "Osman12!", list);
+
+            //Console.WriteLine(result.webspace.add.result.status);
+            //Console.WriteLine(result.webspace.add.result.ErrorText);
+            //Console.WriteLine(result.webspace.add.result.guid);
+            //Console.WriteLine(result.webspace.add.result.Id);            
         }
     }
 }
