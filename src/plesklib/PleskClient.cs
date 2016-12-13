@@ -152,6 +152,18 @@
             return (Toutput)result;
         }
 
+        public ResponseResult ConnectionTest()
+        {
+            var result = new ResponseResult();
+            var listTest = GetIPAddressList();
+
+            result.ErrorCode = listTest.ip.get.result.ErrorCode;
+            result.ErrorText = listTest.ip.get.result.ErrorText;
+            result.status = listTest.ip.get.result.status;
+
+            return result;
+        }
+
         #region Webspace
         public WebSpaceAddResult CreateWebSpace(string name, string ipaddr, string username, string password, List<HostingProperty> properties)
         {
