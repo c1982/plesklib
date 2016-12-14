@@ -190,6 +190,14 @@
             return ExecuteWebRequest<WebSpaceDelPacket, WebSpaceDelResult>(del);
         }
 
+        public WebSpaceGetResult GetWebSpace(string name)
+        {
+            var getSpace = new WebSpaceGetPacket();
+            getSpace.webspace.retrieve.filter.name = name;
+
+            return ExecuteWebRequest<WebSpaceGetPacket, WebSpaceGetResult>(getSpace);
+        }
+
         #endregion
 
         #region Site (Domain)

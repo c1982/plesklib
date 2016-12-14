@@ -86,6 +86,8 @@
     <Compile Include="Models\WebSpaceAddResult.cs" />
     <Compile Include="Models\WebSpaceDel.cs" />
     <Compile Include="Models\WebSpaceDelResult.cs" />
+    <Compile Include="Models\WebSpaceGet.cs" />
+    <Compile Include="Models\WebSpaceGetResult.cs" />
     <Compile Include="PleskClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
