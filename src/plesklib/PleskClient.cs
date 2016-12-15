@@ -1,4 +1,4 @@
-﻿namespace plesklib
+﻿namespace maestropanel.plesklib
 {
     using plesklib.Models;
     using System;

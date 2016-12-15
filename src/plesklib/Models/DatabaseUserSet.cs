@@ -1,4 +1,4 @@
-﻿namespace plesklib.Models
+﻿namespace maestropanel.plesklib.Models
 {
     using System.Collections.Generic;
     using System.Xml.Serialization;

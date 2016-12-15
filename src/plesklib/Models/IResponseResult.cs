@@ -1,4 +1,4 @@
-﻿namespace plesklib.Models
+﻿namespace maestropanel.plesklib.Models
 {
     public interface IResponseResult
     {
