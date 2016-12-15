@@ -182,6 +182,30 @@
             return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
         }
 
+        public WebSpaceAddResult CreateWebSpace(string name, string ipaddr)
+        {
+            var add = new WebspaceAddPacket();
+            add.webspace.add.genSetup.name = name;
+            add.webspace.add.genSetup.ipaddress = ipaddr;
+            
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
+        }
+
+        public WebSpaceAddResult CreateWebSpace(string name, string ipaddr, List<HostingProperty> properties)
+        {
+            var prop = new List<HostingProperty>();
+            
+            if (properties != null)
+                prop.AddRange(properties);
+
+            var add = new WebspaceAddPacket();
+            add.webspace.add.genSetup.name = name;
+            add.webspace.add.genSetup.ipaddress = ipaddr;
+            add.webspace.add.hosting.Properties = prop.ToArray();     
+
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
+        }
+
         public WebSpaceDelResult DeleteWebSpace(string name)
         {
             var del = new WebSpaceDelPacket();
@@ -284,7 +308,22 @@
 
             return ExecuteWebRequest<SubdomainAddPacket, SubdomainAddResult>(add);
         }
-        
+
+        /// <summary>
+        /// Create subdomain for existing domain.
+        /// </summary>
+        /// <param name="parent">domain.com</param>
+        /// <param name="name">sample</param>
+        /// <returns></returns>
+        public SubdomainAddResult CreateSubdomain(string parent, string name)
+        {
+            var add = new Subdomain2AddPacket();
+            add.subdomain.add.parentName = parent;
+            add.subdomain.add.subdomainName = name;
+
+            return ExecuteWebRequest<Subdomain2AddPacket, SubdomainAddResult>(add);
+        }
+                
         public SubdomainDeleteResult DeleteSubdomain(string name)
         {
             var del = new SubdomainDeletePacket();
