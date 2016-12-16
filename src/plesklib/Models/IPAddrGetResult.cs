@@ -16,9 +16,19 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.ip.get.result.status = response.Status ? "ok" : "result";
+            this.ip.get.result.status = response.Status ? "ok" : "error";
             this.ip.get.result.ErrorText = response.Message;
             this.ip.get.result.ErrorCode = 999;
+        }
+
+        public ResponseResult ToResult()
+        {
+            var result = new ResponseResult();
+            result.status = this.ip.get.result.status;
+            result.ErrorCode = this.ip.get.result.ErrorCode;
+            result.ErrorText = this.ip.get.result.ErrorText;
+
+            return result;
         }
     }
 

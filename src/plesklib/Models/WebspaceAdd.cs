@@ -39,6 +39,9 @@
 
         [XmlElement("hosting")]  
         public WebSpaceHostingNode hosting { get; set; }
+
+        [XmlElement("plan-name")]  
+        public string planName { get; set; }
     }
 
     public class WebSpaceGenSetup
@@ -48,6 +51,9 @@
 
         [XmlElement("ip_address")]
         public string ipaddress { get; set; }
+
+        [XmlElement("htype")]
+        public string htype  { get; set; }
     }
 
     public class WebSpaceHostingNode

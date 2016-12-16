@@ -17,6 +17,12 @@
         {
             this.subdomain.del.result = response.ToErrorResult();
         }
+
+
+        public ResponseResult ToResult()
+        {
+            return this.subdomain.del.result;
+        }
     }
 
     public class SubdomainDeleteSubdomainResult

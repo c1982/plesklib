@@ -17,6 +17,11 @@
 
         [XmlElement("database")]
         public DatabaseUserSetResultDatabaseNode database { get; set; }
+        
+        public ResponseResult ToResult()
+        {
+            return this.database.setDbUser.result;
+        }
     }
 
     public class DatabaseUserSetResultDatabaseNode

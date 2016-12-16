@@ -6,6 +6,8 @@
     [XmlRoot("packet")]
     public class SiteGetResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public SiteGetResult()
         {
             this.site = new SiteGetResultSite();
@@ -16,7 +18,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            
+            _response = response;
+        }
+
+        public ResponseResult ToResult()
+        {
+            return _response.ToErrorResult();
         }
     }
 

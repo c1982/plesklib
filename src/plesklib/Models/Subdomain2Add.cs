@@ -7,27 +7,27 @@
     {
         public Subdomain2AddPacket()
         {
-            this.subdomain = new Subdomain();
+            this.subdomain = new Subdomain2Node();
         }
 
         [XmlElement("subdomain")]
-        public Subdomain subdomain { get; set; }
+        public Subdomain2Node subdomain { get; set; }
     }
 
-    public class Subdomain2
+    public class Subdomain2Node
     {
-        public Subdomain2()
+        public Subdomain2Node()
         {
-            this.add = new Subdomain2Add();
+            this.add = new Subdomain2AddNode();
         }
 
         [XmlElement("add")]
-        public Subdomain2Add add { get; set; }
+        public Subdomain2AddNode add { get; set; }
     }
 
-    public class Subdomain2Add
+    public class Subdomain2AddNode
     {
-        public Subdomain2Add()
+        public Subdomain2AddNode()
         {
 
         }

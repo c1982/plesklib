@@ -17,6 +17,12 @@
         {
             this.ftpUser.add.result = response.ToErrorResult();
         }
+
+
+        public ResponseResult ToResult()
+        {
+            return this.ftpUser.add.result;
+        }
     }
 
     public class FtpUserAddResultFtpUserNode

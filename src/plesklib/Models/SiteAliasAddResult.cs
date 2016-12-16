@@ -3,25 +3,30 @@
     using System.Xml.Serialization;
 
     [XmlRoot("packet")]
-    public class SiteAliasPacketResult : IResponseResult
+    public class SiteAliasAddPacketResult : IResponseResult
     {
-        public SiteAliasPacketResult()
+        public SiteAliasAddPacketResult()
         {
-            this.siteAlias = new SiteAliasResult();
+            this.siteAlias = new SiteAliasAddResult();
         }
 
         [XmlElement("site-alias")]
-        public SiteAliasResult siteAlias { get; set; }
+        public SiteAliasAddResult siteAlias { get; set; }
 
         public void SaveResult(ApiResponse response)
         {
             this.siteAlias.create.result = response.ToErrorResult();
         }
+
+        public ResponseResult ToResult()
+        {
+            return this.siteAlias.create.result;
+        }
     }
 
-    public class SiteAliasResult 
+    public class SiteAliasAddResult 
     {
-        public SiteAliasResult()
+        public SiteAliasAddResult()
         {
             this.create = new SiteAliasCreateResult();
         }

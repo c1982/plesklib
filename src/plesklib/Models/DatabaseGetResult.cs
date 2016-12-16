@@ -4,8 +4,10 @@
     using System.Xml.Serialization;
 
     [XmlRoot("packet")]
-    public class DatabaseGetResult
+    public class DatabaseGetResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public DatabaseGetResult()
         {
             this.databaseList = new List<DatabaseGetDatabaseGetDbNode>().ToArray();
@@ -14,6 +16,16 @@
         [XmlArray("database")]
         [XmlArrayItem("get-db")]
         public DatabaseGetDatabaseGetDbNode[] databaseList { get; set; }
+
+        public void SaveResult(ApiResponse response)
+        {
+            _response = response;
+        }
+
+        public ResponseResult ToResult()
+        {
+            return _response.ToErrorResult();
+        }
     }
     
     public class DatabaseGetDatabaseGetDbNode

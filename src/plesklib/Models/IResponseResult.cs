@@ -3,5 +3,6 @@
     public interface IResponseResult
     {
         void SaveResult(ApiResponse response);
+        ResponseResult ToResult();
     }
 }

@@ -17,6 +17,11 @@
         {
             this.subdomain.add.result = response.ToErrorResult();
         }
+
+        public ResponseResult ToResult()
+        {
+            return this.subdomain.add.result;
+        }
     }
 
     public class SubdomainAddSubdomainResult

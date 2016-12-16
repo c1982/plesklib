@@ -17,6 +17,11 @@
         {
             this.ftpUser.del.result = response.ToErrorResult();
         }
+
+        public ResponseResult ToResult()
+        {
+            return this.ftpUser.del.result;
+        }
     }
 
     public class FtpUserDelResultFtpUserNode

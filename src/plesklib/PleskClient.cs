@@ -206,6 +206,23 @@
             return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
         }
 
+        public WebSpaceAddResult CreateWebSpace(string name, string ipaddr, string planName, List<HostingProperty> properties)
+        {
+            var prop = new List<HostingProperty>();
+            
+            if (properties != null)
+                prop.AddRange(properties);
+
+            var add = new WebspaceAddPacket();
+            add.webspace.add.genSetup.name = name;
+            add.webspace.add.genSetup.ipaddress = ipaddr;
+            add.webspace.add.genSetup.htype = "vrt_hst";
+            add.webspace.add.planName = planName;
+            add.webspace.add.hosting.Properties = prop.ToArray();
+            
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
+        }
+
         public WebSpaceDelResult DeleteWebSpace(string name)
         {
             var del = new WebSpaceDelPacket();
@@ -273,16 +290,40 @@
         #endregion
 
         #region Alias
-        public SiteAliasPacketResult CreateAlias(int siteId, string name, bool enableWeb = true, bool enableMail = false, bool enableTomcat = false)
+        public SiteAliasAddPacketResult CreateAlias(int siteId, string name, bool enableWeb = true, bool enableMail = false, bool enableTomcat = false)
         {
-            var add = new SiteAliasPacket();
+            var add = new SiteAliasAddPacket();
             add.siteAlias.createSiteAlias.SiteId = siteId;
             add.siteAlias.createSiteAlias.AliasName = name;
             add.siteAlias.createSiteAlias.pref.web = enableWeb ? "1" : "0";
             add.siteAlias.createSiteAlias.pref.mail = enableMail ? "1" : "0";
             add.siteAlias.createSiteAlias.pref.tomcat = enableTomcat ? "1" : "0";
 
-            return ExecuteWebRequest<SiteAliasPacket, SiteAliasPacketResult>(add);
+            return ExecuteWebRequest<SiteAliasAddPacket, SiteAliasAddPacketResult>(add);
+        }
+
+        public SiteAliasAddPacketResult CreateAlias(string name, string aliasName)
+        {
+            var currentsite = GetSite(name).site.results.FirstOrDefault();
+
+            if (currentsite == null)
+            {
+                var result = new SiteAliasAddPacketResult();
+                result.siteAlias.create.result.ErrorCode = 999;
+                result.siteAlias.create.result.status = "error";
+                result.siteAlias.create.result.ErrorText = String.Format("Site not found: {0}", name);
+
+                return result;
+            }
+            
+            var add = new SiteAliasAddPacket();
+            add.siteAlias.createSiteAlias.SiteId = currentsite.Id;
+            add.siteAlias.createSiteAlias.AliasName = aliasName;
+            add.siteAlias.createSiteAlias.pref.web = "1";
+            add.siteAlias.createSiteAlias.pref.mail = "0";
+            add.siteAlias.createSiteAlias.pref.tomcat = "0";
+
+            return ExecuteWebRequest<SiteAliasAddPacket, SiteAliasAddPacketResult>(add);
         }
 
         public SiteAliasDelResult DeleteAlias(string name)

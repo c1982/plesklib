@@ -17,6 +17,11 @@
         {
             this.protectedDir.add.result = response.ToErrorResult();
         }
+
+        public ResponseResult ToResult()
+        {
+            return this.protectedDir.add.result;
+        }
     }
 
     public class ProtectedDirProtectedResult

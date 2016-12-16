@@ -4,8 +4,10 @@
     using System.Xml.Serialization;
 
     [XmlRoot("packet")]
-    public class WebSpaceGetResult
+    public class WebSpaceGetResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public WebSpaceGetResult()
         {
             this.webspace = new WebSpaceGetResultWebSpaceNode();
@@ -13,6 +15,16 @@
 
         [XmlElement("webspace")]
         public WebSpaceGetResultWebSpaceNode webspace { get; set; }
+
+        public void SaveResult(ApiResponse response)
+        {
+            this._response = response;
+        }
+
+        public ResponseResult ToResult()
+        {
+            return this._response.ToErrorResult();
+        }
     }
 
     public class WebSpaceGetResultWebSpaceNode

@@ -17,6 +17,11 @@
         {
             this.siteAlias.delete.result = response.ToErrorResult();
         }
+
+        public ResponseResult ToResult()
+        {
+            return this.siteAlias.delete.result;
+        }
     }
 
     public class SiteAliasSiteResult

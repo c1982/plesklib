@@ -17,6 +17,11 @@
         {
             this.site.del.result = response.ToErrorResult();
         }
+
+        public ResponseResult ToResult()
+        {
+            return this.site.del.result;
+        }
     }
 
     public class SiteDelSiteResult

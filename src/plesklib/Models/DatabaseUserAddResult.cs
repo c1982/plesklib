@@ -17,6 +17,11 @@
         {
             this.database.addDbUser.result = response.ToErrorResult();
         }
+
+        public ResponseResult ToResult()
+        {
+            return this.database.addDbUser.result;
+        }
     }
 
     public class DatabaseUserAddResultDatabaseNode

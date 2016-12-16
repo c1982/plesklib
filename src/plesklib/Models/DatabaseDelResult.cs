@@ -3,7 +3,7 @@
     using System.Xml.Serialization;
 
     [XmlRoot("packet")]
-    public class DatabaseDelResult
+    public class DatabaseDelResult : IResponseResult
     {
         public DatabaseDelResult()
         {
@@ -12,6 +12,16 @@
 
         [XmlElement("database")]
         public DatabaseDelResultDatabaseNode database { get; set; }
+
+        public void SaveResult(ApiResponse response)
+        {
+            this.database.delDb.result = response.ToErrorResult();
+        }
+
+        public ResponseResult ToResult()
+        {
+            return this.database.delDb.result;
+        }
     }
 
     public class DatabaseDelResultDatabaseNode

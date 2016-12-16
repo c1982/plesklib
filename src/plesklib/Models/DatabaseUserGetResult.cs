@@ -4,8 +4,10 @@
     using System.Xml.Serialization;
 
     [XmlRoot("packet")]
-    public class DatabaseUserGetResult
+    public class DatabaseUserGetResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public DatabaseUserGetResult()
         {
             this.database = new DatabaseUserGetResultDatabaseNode();
@@ -13,6 +15,16 @@
 
         [XmlElement("database")]
         public DatabaseUserGetResultDatabaseNode database { get; set; }
+
+        public void SaveResult(ApiResponse response)
+        {
+            this._response = response;
+        }
+
+        public ResponseResult ToResult()
+        {
+            return _response.ToErrorResult();
+        }
     }
 
     public class DatabaseUserGetResultDatabaseNode

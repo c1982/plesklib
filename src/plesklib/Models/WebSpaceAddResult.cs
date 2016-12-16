@@ -17,6 +17,11 @@
         {
             this.webspace.add.result = response.ToErrorResult();
         }
+
+        public ResponseResult ToResult()
+        {
+            return this.webspace.add.result;
+        }
     }
 
     public class WebSpaceAddResultNode

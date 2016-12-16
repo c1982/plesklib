@@ -19,6 +19,11 @@
             this.webspace.del.result.ErrorText = response.Message;
             this.webspace.del.result.ErrorCode = 999;
         }
+
+        public ResponseResult ToResult()
+        {
+            return this.webspace.del.result;
+        }
     }
 
     public class WebSpaceDelResultWebSpaceNode

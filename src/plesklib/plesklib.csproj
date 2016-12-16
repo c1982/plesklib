@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\SiteAliasAdd2.cs" />
     <Compile Include="Models\Subdomain2Add.cs" />
     <Compile Include="Models\DatabaseAdd.cs" />
     <Compile Include="Models\DatabaseAddResult.cs" />
@@ -71,10 +72,10 @@
     <Compile Include="Models\SiteAdd.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\SiteAddResult.cs" />
-    <Compile Include="Models\SiteAlias.cs" />
+    <Compile Include="Models\SiteAliasAdd.cs" />
     <Compile Include="Models\SiteAliasDel.cs" />
     <Compile Include="Models\SiteAliasDelResult.cs" />
-    <Compile Include="Models\SiteAliasResult.cs" />
+    <Compile Include="Models\SiteAliasAddResult.cs" />
     <Compile Include="Models\SiteDel.cs" />
     <Compile Include="Models\SiteDelResult.cs" />
     <Compile Include="Models\SiteGet.cs" />

@@ -7,27 +7,27 @@
     {
         public SubdomainAddPacket()
         {
-            this.subdomain = new Subdomain();
+            this.subdomain = new SubdomainNode();
         }
 
         [XmlElement("subdomain")]
-        public Subdomain subdomain { get; set; }
+        public SubdomainNode subdomain { get; set; }
     }
 
-    public class Subdomain
+    public class SubdomainNode
     {
-        public Subdomain()
+        public SubdomainNode()
         {
-            this.add = new SubdomainAdd();
+            this.add = new SubdomainAddNode();
         }
 
         [XmlElement("add")]
-        public SubdomainAdd add { get; set; }
+        public SubdomainAddNode add { get; set; }
     }
 
-    public class SubdomainAdd
+    public class SubdomainAddNode
     {
-        public SubdomainAdd()
+        public SubdomainAddNode()
         {
             this.ftpUsername = new HostingProperty() { Name = "ftp_login" };
             this.ftpPassword = new HostingProperty() { Name = "ftp_password" };

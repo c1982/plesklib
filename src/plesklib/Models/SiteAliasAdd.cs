@@ -3,21 +3,20 @@
     using System.Xml.Serialization;
 
     [XmlRoot("packet")]
-    public class SiteAliasPacket
+    public class SiteAliasAddPacket
     {
-
-        public SiteAliasPacket()
+        public SiteAliasAddPacket()
         {
-            this.siteAlias = new SiteAlias();
+            this.siteAlias = new SiteAliasAddNode();
         }
 
         [XmlElement("site-alias")]
-        public SiteAlias siteAlias { get; set; }
+        public SiteAliasAddNode siteAlias { get; set; }
     }
     
-    public class SiteAlias
+    public class SiteAliasAddNode
     {
-        public SiteAlias()
+        public SiteAliasAddNode()
         {
             this.createSiteAlias = new SiteAliasCreate();
         }

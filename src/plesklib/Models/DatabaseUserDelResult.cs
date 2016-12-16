@@ -17,6 +17,11 @@
         {
             this.database.del.result = response.ToErrorResult();
         }
+
+        public ResponseResult ToResult()
+        {
+            return this.database.del.result;
+        }
     }
 
     public class DatabaseUserDelResultDatabaseNode

@@ -17,6 +17,12 @@
         {
             this.site.addResult.result = response.ToErrorResult();
         }
+
+
+        public ResponseResult ToResult()
+        {
+            return this.site.addResult.result;
+        }
     }
 
     public class SiteResult
