@@ -10,6 +10,7 @@
 
         public SiteGetResult()
         {
+            _response = new ApiResponse();
             this.site = new SiteGetResultSite();
         }
 

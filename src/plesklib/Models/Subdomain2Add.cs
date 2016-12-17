@@ -38,5 +38,7 @@
         [XmlElement("name")]
         public string subdomainName { get; set; }
 
+        [XmlElement("home")]
+        public string home { get; set; }
     }
 }

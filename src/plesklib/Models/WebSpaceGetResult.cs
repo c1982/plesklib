@@ -10,6 +10,7 @@
 
         public WebSpaceGetResult()
         {
+            _response = new ApiResponse();
             this.webspace = new WebSpaceGetResultWebSpaceNode();
         }
 
@@ -38,53 +39,106 @@
         public WebSpaceGetResultGetNode getWebSpace { get; set; }
     }
 
+
     public class WebSpaceGetResultGetNode
-    {
+    {        
         public WebSpaceGetResultGetNode()
         {
-            this.filter = new WebSpaceGetResultFilterNode();
-            this.dataset = new WebSpaceGetResultDatasetNode();            
+            this.result = new WebSpaceGetResultResultNode();   
         }
 
-        [XmlElement("filter")]
-        public WebSpaceGetResultFilterNode filter { get; set; }
-
-        [XmlElement("dataset")]
-        public WebSpaceGetResultDatasetNode dataset { get; set; }
+        [XmlElement("result")]
+        public WebSpaceGetResultResultNode result { get; set; }
     }
 
-    public class WebSpaceGetResultFilterNode
+
+    public class WebSpaceGetResultResultNode
     {
+        public WebSpaceGetResultResultNode()
+        {
+            this.data = new WebSpaceGetResultDataNode();
+        }
+
+        [XmlElement("status")]
+        public string status { get; set; }
+
+        [XmlElement("filter-id")]
+        public string filterId { get; set; }
+
         [XmlElement("id")]
         public int Id { get; set; }
+
+        [XmlElement("data")]
+        public WebSpaceGetResultDataNode data { get; set; }
     }
 
-    public class WebSpaceGetResultDatasetNode
+
+    public class WebSpaceGetResultDataNode
     {
-        public WebSpaceGetResultDatasetNode()
+        public WebSpaceGetResultDataNode()
         {
             this.hosting = new WebSpaceGetResultHostingNode();
-            this.limits = new List<HostingProperty>().ToArray();
-            this.stat = new WebSpaceGetResultStatsNode();
+            this.info = new WebSpaceGetResultGenInfoNode();
         }
+
+        [XmlElement("gen_info")]
+        public WebSpaceGetResultGenInfoNode info { get; set; }
 
         [XmlElement("hosting")]
         public WebSpaceGetResultHostingNode hosting { get; set; }
+    }
 
-        [XmlArray("limits")]
-        [XmlArrayItem("limit")]
-        public HostingProperty[] limits { get; set; }
+    public class WebSpaceGetResultGenInfoNode
+    {
+        [XmlElement("cr_date")]
+        public string createDate { get; set; }
 
-        [XmlElement("stat")]
-        public WebSpaceGetResultStatsNode stat { get; set; }
+        [XmlElement("name")]
+        public string name { get; set; }
+
+        [XmlElement("ascii-name")]
+        public string aciiName { get; set; }
+
+        [XmlElement("status")]
+        public string status { get; set; }
+
+        [XmlElement("real_size")]
+        public string realSize { get; set; }
+
+        [XmlElement("owner-login")]
+        public string ownerLogin { get; set; }
+
+        [XmlElement("dns_ip_address")]
+        public string dnsIpAddr { get; set; }
+
+        [XmlElement("htype")]
+        public string htype { get; set; }
+
+        [XmlElement("guid")]
+        public string guid { get; set; }
+
+        [XmlElement("vendor-guid")]
+        public string vendorGuid { get; set; }
+
+        [XmlElement("external-id")]
+        public string externalId { get; set; }
+
+        [XmlElement("sb-site-uuid")]
+        public string sitebuilderSiteUuid { get; set; }
+
+        [XmlElement("description")]
+        public string description { get; set; }
+
+        [XmlElement("admin-description")]
+        public string adminDescription { get; set; }
     }
 
     public class WebSpaceGetResultHostingNode
     {
         public WebSpaceGetResultHostingNode()
         {
-            this.standardForward = new WebSpaceGetResultStdFwdNode();
-            this.frameForward = new WebSpaceGetResultFrmFwdNode();
+            //this.standardForward = new WebSpaceGetResultStdFwdNode();
+            //this.frameForward = new WebSpaceGetResultFrmFwdNode();
             this.properties = new List<HostingProperty>().ToArray();
         }
 
@@ -92,11 +146,11 @@
         [XmlArrayItem("property")]
         public HostingProperty[] properties { get; set; }
 
-        [XmlElement("std_fwd")]
-        public WebSpaceGetResultStdFwdNode standardForward { get; set; }
+        //[XmlElement("std_fwd")]
+        //public WebSpaceGetResultStdFwdNode standardForward { get; set; }
 
-        [XmlElement("frm_fwd")]
-        public WebSpaceGetResultFrmFwdNode frameForward { get; set; }
+        //[XmlElement("frm_fwd")]
+        //public WebSpaceGetResultFrmFwdNode frameForward { get; set; }
     }
 
     public class WebSpaceGetResultStdFwdNode

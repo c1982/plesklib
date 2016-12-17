@@ -30,15 +30,35 @@
         public WebSpaceGetGetNode()
         {
             this.filter = new WebSpaceGetFilterNode();
+            this.dataset = new WebSpaceGetDatasetNode();
         }
 
         [XmlElement("filter")]
         public WebSpaceGetFilterNode filter { get; set; }
+
+        [XmlElement("dataset")]
+        public WebSpaceGetDatasetNode dataset { get; set; }
     }
 
     public class WebSpaceGetFilterNode
     {
         [XmlElement("name")]
         public string name { get; set; }
+    }
+
+    public class WebSpaceGetDatasetNode
+    {
+        public WebSpaceGetDatasetNode()
+        {
+            this.hosting = new WebSpaceGetHostingNode();
+        }
+
+        [XmlElement("hosting")]
+        public WebSpaceGetHostingNode hosting { get; set; }
+    }
+
+    public class WebSpaceGetHostingNode
+    {
+
     }
 }

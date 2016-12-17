@@ -32,6 +32,9 @@
             this.pref = new SiteAliasPref();
         }
 
+        [XmlElement("status")]
+        public string status { get; set; }
+
         [XmlElement("site-id")]
         public int SiteId { get; set; }
 

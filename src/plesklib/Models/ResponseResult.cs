@@ -18,5 +18,36 @@
 
         [XmlElement("guid")]
         public string guid { get; set; }
+
+        [XmlIgnore]
+        private ApiResponse _response;
+
+        [XmlIgnore]
+        public ApiResponse response
+        {
+            get
+            {
+                return this._response;
+            }
+            set
+            {
+                this._response = value;
+
+                if (value.error != null)
+                {
+                    this.status = value.error.system.status;
+                    this.ErrorCode = value.error.system.errorcode;
+                    this.ErrorText = value.error.system.errtext;
+                }
+            }
+        }
+
+
+        public ResponseResult()
+        {
+            this._response = new ApiResponse();
+        }
+
+
     }
 }

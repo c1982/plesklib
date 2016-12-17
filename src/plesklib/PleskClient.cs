@@ -130,24 +130,27 @@
             {
                 var message = SerializeObjectToXmlString<Tinput>(apiRequest);
 
-                response.ResponseXmlString = SendHttpRequest(message);                
-                result = DeSerializeObject<Toutput>(response.ResponseXmlString);
+                response.RequestXmlString = message;
+                response.ResponseXmlString = SendHttpRequest(message);
 
-                response.Status = true;
+                response.error = DeSerializeObject<ApiErrorResponse>(response.ResponseXmlString);
+
+                if(response.error.system.errorcode == 0)
+                {
+                    result = DeSerializeObject<Toutput>(response.ResponseXmlString);
+                    response.Status = true;
+                }                
             }
             catch (Exception ex)
             {
                 response.Message = ex.Message;
                 response.MessageDetails = ex.StackTrace;
             }
+            
+            var output = result as IResponseResult;
 
-            if (!response.Status)
-            {
-                var output = result as IResponseResult;
-
-                if(output != null)
-                    output.SaveResult(response);                
-            }
+            if(output != null)
+                output.SaveResult(response);                          
 
             return (Toutput)result;
         }
@@ -304,9 +307,9 @@
 
         public SiteAliasAddPacketResult CreateAlias(string name, string aliasName)
         {
-            var currentsite = GetSite(name).site.results.FirstOrDefault();
+            var currentsite = GetSite(name);
 
-            if (currentsite == null)
+            if (currentsite.ToResult().status != "ok")
             {
                 var result = new SiteAliasAddPacketResult();
                 result.siteAlias.create.result.ErrorCode = 999;
@@ -317,7 +320,8 @@
             }
             
             var add = new SiteAliasAddPacket();
-            add.siteAlias.createSiteAlias.SiteId = currentsite.Id;
+            add.siteAlias.createSiteAlias.status = "0"; //0 (alias enabled) 1 (alias disabled) 2 (primary site disabled) 3 (alias disabled, primary site disabled) 8 (alias disabled)
+            add.siteAlias.createSiteAlias.SiteId = currentsite.site.results[0].Id;
             add.siteAlias.createSiteAlias.AliasName = aliasName;
             add.siteAlias.createSiteAlias.pref.web = "1";
             add.siteAlias.createSiteAlias.pref.mail = "0";
@@ -361,6 +365,16 @@
             var add = new Subdomain2AddPacket();
             add.subdomain.add.parentName = parent;
             add.subdomain.add.subdomainName = name;
+
+            return ExecuteWebRequest<Subdomain2AddPacket, SubdomainAddResult>(add);
+        }
+
+        public SubdomainAddResult CreateSubdomain(string parent, string name, string homedir)
+        {
+            var add = new Subdomain2AddPacket();
+            add.subdomain.add.parentName = parent;
+            add.subdomain.add.subdomainName = name;
+            add.subdomain.add.home = homedir;
 
             return ExecuteWebRequest<Subdomain2AddPacket, SubdomainAddResult>(add);
         }
