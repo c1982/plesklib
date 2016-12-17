@@ -11,18 +11,13 @@
         public string ResponseXmlString { get; set; }
 
         public ApiErrorResponse error { get; set; }
-
-        public ApiResponse()
-        {
-            
-        }
-
+        
         public ResponseResult ToErrorResult()
         {
             return new ResponseResult() { status = this.Status ? "ok" : "error", 
                                             ErrorCode = 999, 
                                             ErrorText = this.Message, 
-                                            response = this};
+                                            apiResponse = this};
         }
     }
 

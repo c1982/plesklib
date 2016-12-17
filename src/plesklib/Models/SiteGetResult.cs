@@ -11,11 +11,11 @@
         public SiteGetResult()
         {
             _response = new ApiResponse();
-            this.site = new SiteGetResultSite();
+            this.site = new SiteGetResultSiteNode();
         }
 
         [XmlElement("site")]
-        public SiteGetResultSite site { get; set; }
+        public SiteGetResultSiteNode site { get; set; }
 
         public void SaveResult(ApiResponse response)
         {
@@ -24,53 +24,78 @@
 
         public ResponseResult ToResult()
         {
-            return _response.ToErrorResult();
+            if (this._response.Status)
+                return new ResponseResult()
+                {
+                    apiResponse = _response,
+                    ErrorCode = this.site.receive.result.errcode,
+                    ErrorText = this.site.receive.result.errtext,
+                    status = this.site.receive.result.status
+                };
+            else
+                return this._response.ToErrorResult();
         }
     }
 
-    public class SiteGetResultSite
+    public class SiteGetResultSiteNode
     {
-        public SiteGetResultSite()
+        public SiteGetResultSiteNode()
         {
-            this.results = new List<SiteGetResultGet>().ToArray();
+            this.receive = new SiteGetResultGetNode();
         }
 
-        [XmlArray("get")]
-        [XmlArrayItem("result")]
-        public SiteGetResultGet[] results { get; set; }
+        [XmlElement("get")]      
+        public SiteGetResultGetNode receive { get; set; }
     }
 
-    public class SiteGetResultGet
+    public class SiteGetResultGetNode
+    {
+        public SiteGetResultGetNode()
+        {
+            this.result = new SiteGetResultResultNode();
+        }
+
+         [XmlElement("result")]
+        public SiteGetResultResultNode result { get; set; }
+    }
+
+    public class SiteGetResultResultNode
     {
         [XmlElement("status")]
         public string status { get; set; }
 
+        [XmlElement("errcode")]
+        public int errcode { get; set; }
+
+        [XmlElement("errtext")]
+        public string errtext { get; set; }
+
         [XmlElement("filter-id")]
-        public int filterId { get; set; }
+        public string filterId { get; set; }
 
         [XmlElement("id")]
         public int Id { get; set; }
 
         [XmlElement("data")]
-        public SiteGetData data { get; set; }
+        public SiteGetResultDataNode data { get; set; }
     }
 
-    public class SiteGetData
+    public class SiteGetResultDataNode
     {
-        public SiteGetData()
+        public SiteGetResultDataNode()
         {
-            this.getInfo = new SiteGetGenInfo();
-            this.hosting = new SiteGetHosting();
+            this.getInfo = new SiteGetGenInfoNode();
+            this.hosting = new SiteGetHostingNode();
         }
 
         [XmlElement("gen_info")]
-        public SiteGetGenInfo getInfo { get; set; }
+        public SiteGetGenInfoNode getInfo { get; set; }
 
         [XmlElement("hosting")]
-        public SiteGetHosting hosting { get; set; }
+        public SiteGetHostingNode hosting { get; set; }
     }
 
-    public class SiteGetGenInfo
+    public class SiteGetGenInfoNode
     {
         [XmlElement("cr_date")]
         public string crDate { get; set; }
@@ -106,9 +131,9 @@
         public string description { get; set; }
     }
 
-    public class SiteGetHosting
+    public class SiteGetHostingNode
     {
-        public SiteGetHosting()
+        public SiteGetHostingNode()
         {
             this.Properties = new List<HostingProperty>().ToArray();
         }

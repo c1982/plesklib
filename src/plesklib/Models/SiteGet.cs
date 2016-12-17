@@ -7,49 +7,61 @@
     {
         public SiteGetPacket()
         {
-            this.site = new SiteGetSite();
+            this.site = new SiteGetSiteNode();
         }
 
         [XmlElement("site")]
-        public SiteGetSite site { get; set; }
+        public SiteGetSiteNode site { get; set; }
     }
 
-    public class SiteGetSite
+    public class SiteGetSiteNode
     {
-        public SiteGetSite()
+        public SiteGetSiteNode()
         {
-            this.get = new SiteGet();
+            this.get = new SiteGetNode();
         }
 
         [XmlElement("get")]
-        public SiteGet get { get; set; }
+        public SiteGetNode get { get; set; }
     }
 
-    public class SiteGet
+    public class SiteGetNode
     {
 
-        public SiteGet()
+        public SiteGetNode()
         {
-            this.filter = new SiteGetFilter();
-            this.dataset = new SiteGetDataSet();
+            this.filter = new SiteGetFilterNode();
+            this.dataset = new SiteGetDataSetNode();
         }
 
         [XmlElement("filter")]
-        public SiteGetFilter filter { get; set; }
+        public SiteGetFilterNode filter { get; set; }
 
         [XmlElement("dataset")]
-        public SiteGetDataSet dataset { get; set; }
+        public SiteGetDataSetNode dataset { get; set; }
     }
 
-    public class SiteGetFilter
+    public class SiteGetFilterNode
     {        
         [XmlElement("name")]
         public string Name { get; set; }
     }
 
-    public class SiteGetDataSet
+    public class SiteGetDataSetNode
     {
+        public SiteGetDataSetNode()
+        {
+            this.Hosting = new SiteGetDataSetHostingNode();
+        }
+
         [XmlElement("hosting")]
-        public string Hosting { get; set; }
+        public SiteGetDataSetHostingNode Hosting { get; set; }
     }
+
+    public class SiteGetDataSetHostingNode
+    {
+
+    }
+
+
 }

@@ -10,6 +10,7 @@
 
         public DatabaseGetResult()
         {
+            _response = new ApiResponse();
             this.databaseList = new List<DatabaseGetDatabaseGetDbNode>().ToArray();
         }
 

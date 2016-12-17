@@ -1,5 +1,6 @@
 ﻿namespace maestropanel.plesklib.Models
 {
+    using System;
     using System.Xml.Serialization;
 
     public class ResponseResult
@@ -23,7 +24,7 @@
         private ApiResponse _response;
 
         [XmlIgnore]
-        public ApiResponse response
+        public ApiResponse apiResponse
         {
             get
             {
@@ -33,11 +34,22 @@
             {
                 this._response = value;
 
-                if (value.error != null)
+                if (value == null)
+                    return;
+
+                if (!String.IsNullOrEmpty(value.error.system.status))
                 {
                     this.status = value.error.system.status;
                     this.ErrorCode = value.error.system.errorcode;
                     this.ErrorText = value.error.system.errtext;
+                    return;
+                }
+
+                if (!value.Status)
+                {
+                    this.status = value.Status ? "ok" : "error";
+                    this.ErrorCode = 999;
+                    this.ErrorText = value.Message;
                 }
             }
         }

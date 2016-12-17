@@ -10,6 +10,7 @@
 
         public DatabaseUserGetResult()
         {
+            this._response = new ApiResponse();
             this.database = new DatabaseUserGetResultDatabaseNode();
         }
 

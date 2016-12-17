@@ -18,18 +18,18 @@
     {
         public SiteAliasAddNode()
         {
-            this.createSiteAlias = new SiteAliasCreate();
+            this.createSiteAlias = new SiteAliasAddCreateNode();
         }
 
         [XmlElement("create")]
-        public SiteAliasCreate createSiteAlias { get; set; }
+        public SiteAliasAddCreateNode createSiteAlias { get; set; }
     }
 
-    public class SiteAliasCreate
+    public class SiteAliasAddCreateNode
     {
-        public SiteAliasCreate()
+        public SiteAliasAddCreateNode()
         {
-            this.pref = new SiteAliasPref();
+            //this.pref = new SiteAliasAddPrefNode();
         }
 
         [XmlElement("status")]
@@ -41,11 +41,11 @@
         [XmlElement("name")]
         public string AliasName { get; set; }
 
-        [XmlElement("pref")]
-        public SiteAliasPref pref { get; set; }
+        //[XmlElement("pref")]
+        //public SiteAliasAddPrefNode pref { get; set; }
     }
 
-    public class SiteAliasPref
+    public class SiteAliasAddPrefNode
     {
         [XmlElement("web")]
         public string web { get; set; }

@@ -51,26 +51,25 @@
             //Console.WriteLine(result.webspace.add.result.Id);   
 
             //var cdom = client.GetSite("konaklirealestate.com");
+            //var b = cdom.ToResult();
             
-            //Console.WriteLine(cdom.ToResult().status);
-            //Console.WriteLine(cdom.ToResult().ErrorText);
-            //Console.WriteLine(cdom.site.results.Length);
+            //Console.WriteLine("Status: {0}",b.status);
+            //Console.WriteLine("Message: {0}",b.ErrorText);
+            //Console.WriteLine("Id: {0}", cdom.site.receive.result.Id);
 
-            //foreach (var item in cdom.site.results)
-            //{
-            //    Console.WriteLine(item.data.getInfo.Name);
-            //}
+            //var s = client.GetWebSpace("konaklirealestate.com1");
+            //var b = s.ToResult();
 
-            var s = client.GetWebSpace("konaklirealestate.com");
-            var b = s.ToResult();
+            //Console.WriteLine("Status: {0}",b.status);
+            //Console.WriteLine("Message: {0}",b.ErrorText);
+            //Console.WriteLine(b.apiResponse.ResponseXmlString);
+            //Console.WriteLine(s.webspace.getWebSpace.result.Id);
 
-            Console.WriteLine(b.status);
-            Console.WriteLine(b.response.RequestXmlString);
-            Console.WriteLine(b.response.ResponseXmlString);
+            var s = client.CreateAlias("konaklirealestate.com", "arkadasim.org");
+            var result = s.ToResult();
 
-            Console.WriteLine(b.ErrorText);
-            Console.WriteLine(s.webspace.getWebSpace.result.Id);
-            Console.WriteLine(s.webspace.getWebSpace.result.status);
+            Console.WriteLine("Status: {0}", result.status);
+            Console.WriteLine("Message: {0}", result.ErrorText);
         }
     }
 }

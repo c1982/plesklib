@@ -5,39 +5,42 @@
     [XmlRoot("packet")]
     public class SiteAliasAddPacketResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public SiteAliasAddPacketResult()
         {
-            this.siteAlias = new SiteAliasAddResult();
+            this.siteAlias = new SiteAliasAddResultSiteAliasNode();
         }
 
         [XmlElement("site-alias")]
-        public SiteAliasAddResult siteAlias { get; set; }
+        public SiteAliasAddResultSiteAliasNode siteAlias { get; set; }
 
         public void SaveResult(ApiResponse response)
         {
-            this.siteAlias.create.result = response.ToErrorResult();
+            this._response = response;
         }
 
         public ResponseResult ToResult()
         {
+            this.siteAlias.create.result.apiResponse = this._response;                        
             return this.siteAlias.create.result;
         }
     }
 
-    public class SiteAliasAddResult 
+    public class SiteAliasAddResultSiteAliasNode
     {
-        public SiteAliasAddResult()
+        public SiteAliasAddResultSiteAliasNode()
         {
-            this.create = new SiteAliasCreateResult();
+            this.create = new SiteAliasAddCreateResultNode();
         }
         
         [XmlElement("create")]
-        public SiteAliasCreateResult create { get; set; }
+        public SiteAliasAddCreateResultNode create { get; set; }
     }
 
-    public class SiteAliasCreateResult
+    public class SiteAliasAddCreateResultNode
     {
-        public SiteAliasCreateResult()
+        public SiteAliasAddCreateResultNode()
         {
             this.result = new ResponseResult();
         }

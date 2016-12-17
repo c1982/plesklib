@@ -24,7 +24,13 @@
 
         public ResponseResult ToResult()
         {
-            return this._response.ToErrorResult();
+            if (this._response.Status)
+                return new ResponseResult() { apiResponse = _response, 
+                                                ErrorCode = this.webspace.getWebSpace.result.errcode, 
+                                                ErrorText = this.webspace.getWebSpace.result.errtext, 
+                                                status = this.webspace.getWebSpace.result.status };
+            else
+                return this._response.ToErrorResult();
         }
     }
 
@@ -61,6 +67,12 @@
 
         [XmlElement("status")]
         public string status { get; set; }
+
+        [XmlElement("errcode")]
+        public int errcode { get; set; }
+
+        [XmlElement("errtext")]
+        public string errtext { get; set; }
 
         [XmlElement("filter-id")]
         public string filterId { get; set; }

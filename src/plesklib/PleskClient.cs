@@ -14,30 +14,35 @@
 
     public class PleskClient
     {
+        private const string STATUS_OK = "ok";
+        private const string STATUS_ERROR = "error";
+
         private string apiurl;
         private string hostname;
         private string port;
         private string username;
         private string password;
+        private int connectioTimeOut;
 
         public PleskClient()
         {
 
         }
 
-        public PleskClient(string hostname, string username, string password, string port = "8443", bool https = true)
+        public PleskClient(string hostname, string username, string password, string port = "8443", bool https = true, int timeout = 10000)
         {
             this.hostname = hostname;
             this.username = username;
             this.password = password;
             this.port = port;
+            this.connectioTimeOut = timeout;
             
             this.apiurl = String.Format("{2}://{0}:{1}/enterprise/control/agent.php", hostname, port, https ? "https" : "http");
         }
 
         private void Auth(ref HttpWebRequest req)
         {
-            req.Timeout = 30000;
+            req.Timeout = this.connectioTimeOut;
             req.Method = "POST";
             req.Headers.Add("HTTP_AUTH_LOGIN", username);
             req.Headers.Add("HTTP_AUTH_PASSWD", password);
@@ -135,9 +140,10 @@
 
                 response.error = DeSerializeObject<ApiErrorResponse>(response.ResponseXmlString);
 
-                if(response.error.system.errorcode == 0)
+                if(String.IsNullOrEmpty(response.error.system.status)) //No Error
                 {
-                    result = DeSerializeObject<Toutput>(response.ResponseXmlString);
+                    result = DeSerializeObject<Toutput>(response.ResponseXmlString);                    
+                    response.Message = "Api communication is successfully";
                     response.Status = true;
                 }                
             }
@@ -285,10 +291,10 @@
 
         public SiteGetResult GetSite(string name)
         {
-            var get = new SiteGet();
-            get.filter.Name = name;
+            var getsite = new SiteGetPacket();
+            getsite.site.get.filter.Name = name;
 
-            return ExecuteWebRequest<SiteGet, SiteGetResult>(get);
+            return ExecuteWebRequest<SiteGetPacket, SiteGetResult>(getsite);
         }
         #endregion
 
@@ -298,9 +304,9 @@
             var add = new SiteAliasAddPacket();
             add.siteAlias.createSiteAlias.SiteId = siteId;
             add.siteAlias.createSiteAlias.AliasName = name;
-            add.siteAlias.createSiteAlias.pref.web = enableWeb ? "1" : "0";
-            add.siteAlias.createSiteAlias.pref.mail = enableMail ? "1" : "0";
-            add.siteAlias.createSiteAlias.pref.tomcat = enableTomcat ? "1" : "0";
+            //add.siteAlias.createSiteAlias.pref.web = enableWeb ? "1" : "0";
+            //add.siteAlias.createSiteAlias.pref.mail = enableMail ? "1" : "0";
+            //add.siteAlias.createSiteAlias.pref.tomcat = enableTomcat ? "1" : "0";
 
             return ExecuteWebRequest<SiteAliasAddPacket, SiteAliasAddPacketResult>(add);
         }
@@ -308,24 +314,23 @@
         public SiteAliasAddPacketResult CreateAlias(string name, string aliasName)
         {
             var currentsite = GetSite(name);
+            var currentSiteResult = currentsite.ToResult();
 
-            if (currentsite.ToResult().status != "ok")
+            if (currentSiteResult.status != STATUS_OK)
             {
                 var result = new SiteAliasAddPacketResult();
-                result.siteAlias.create.result.ErrorCode = 999;
-                result.siteAlias.create.result.status = "error";
-                result.siteAlias.create.result.ErrorText = String.Format("Site not found: {0}", name);
+                result.siteAlias.create.result = currentSiteResult;
 
                 return result;
             }
             
             var add = new SiteAliasAddPacket();
             add.siteAlias.createSiteAlias.status = "0"; //0 (alias enabled) 1 (alias disabled) 2 (primary site disabled) 3 (alias disabled, primary site disabled) 8 (alias disabled)
-            add.siteAlias.createSiteAlias.SiteId = currentsite.site.results[0].Id;
+            add.siteAlias.createSiteAlias.SiteId = currentsite.site.receive.result.Id;
             add.siteAlias.createSiteAlias.AliasName = aliasName;
-            add.siteAlias.createSiteAlias.pref.web = "1";
-            add.siteAlias.createSiteAlias.pref.mail = "0";
-            add.siteAlias.createSiteAlias.pref.tomcat = "0";
+            //add.siteAlias.createSiteAlias.pref.web = "1";
+            //add.siteAlias.createSiteAlias.pref.mail = "0";
+            //add.siteAlias.createSiteAlias.pref.tomcat = "0";
 
             return ExecuteWebRequest<SiteAliasAddPacket, SiteAliasAddPacketResult>(add);
         }
@@ -472,7 +477,7 @@
         public DatabaseDelResult DeleteDatabase(string name, string databaseName)
         {
             var result = new DatabaseDelResult();
-            result.database.delDb.result.status = "error";
+            result.database.delDb.result.status = STATUS_ERROR;
 
             var list = GetDatabaseList(name);
 
@@ -599,7 +604,7 @@
 
             if (!list.database.users.Any())
             {
-                result.database.setDbUser.result.status = "error";
+                result.database.setDbUser.result.status = STATUS_ERROR;
                 result.database.setDbUser.result.ErrorCode = 999;
                 result.database.setDbUser.result.ErrorText = "No users in this database";
 
@@ -610,7 +615,7 @@
 
             if (currentUser == null)
             {
-                result.database.setDbUser.result.status = "error";
+                result.database.setDbUser.result.status = STATUS_ERROR;
                 result.database.setDbUser.result.ErrorCode = 999;
                 result.database.setDbUser.result.ErrorText = "User not found";
 
