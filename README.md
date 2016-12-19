@@ -54,7 +54,7 @@ or
 	
 	Console.WriteLine("Status: {0}", result.status);
 	Console.WriteLine("Message: {0}", result.ErrorText);
-	Console.WriteLine("New Webspace Id: {0}", create.subdomain.add.result.Id);
+	Console.WriteLine("New Subdomain Id: {0}", create.subdomain.add.result.Id);
 ```
 
 ## API Actions
