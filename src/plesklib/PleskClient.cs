@@ -632,5 +632,51 @@
         }
         #endregion
 
+        #region Virtual Directory
+        public VirtualDirectoryAddResult CreateVirtualDirectory(string name, string virtualDirectoryName, string physichalPath ="")
+        {
+            var currentsite = GetSite(name);
+            var currentSiteResult = currentsite.ToResult();
+
+            if (currentSiteResult.status != STATUS_OK)
+            {
+                var result = new VirtualDirectoryAddResult();
+                result.virtdir.create.result = currentSiteResult;
+
+                return result;
+            }
+
+            var addVirt = new VirtualDirectoryAddPacket();
+            addVirt.virt.siteId = currentsite.site.receive.result.Id;
+            addVirt.virt.virtualDirectoryName = virtualDirectoryName;
+            addVirt.virt.properties.readlPath = String.IsNullOrEmpty(physichalPath) ? virtualDirectoryName : physichalPath;
+
+            return ExecuteWebRequest<VirtualDirectoryAddPacket, VirtualDirectoryAddResult>(addVirt);
+        }
+
+        public VirtualDirectoryDelResult DeleteVirtualDirectory(string name, string virtualDirectoryName)
+        {
+            var currentsite = GetSite(name);
+            var currentSiteResult = currentsite.ToResult();
+
+            if (currentSiteResult.status != STATUS_OK)
+            {
+                var result = new VirtualDirectoryDelResult();
+                result.virtdir.remove.result = currentSiteResult;
+
+                return result;
+            }
+
+            var delVirt = new VirtualDirectoryDelPacket();
+            delVirt.virtdir.remove.siteId = currentsite.site.receive.result.Id;
+            delVirt.virtdir.remove.virtualDirectoryName = virtualDirectoryName;
+
+            return ExecuteWebRequest<VirtualDirectoryDelPacket, VirtualDirectoryDelResult>(delVirt);
+        }
+        #endregion
+
+        //Mail Management
+
+        //Dns Management
     }
 }

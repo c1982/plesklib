@@ -84,6 +84,10 @@
     <Compile Include="Models\SubdomainAdd.cs" />
     <Compile Include="Models\SubdomainDelete.cs" />
     <Compile Include="Models\SubdomainDeleteResult.cs" />
+    <Compile Include="Models\VirtualDirectoryAdd.cs" />
+    <Compile Include="Models\VirtualDirectoryAddResult.cs" />
+    <Compile Include="Models\VirtualDirectoryDel.cs" />
+    <Compile Include="Models\VirtualDirectoryDelResult.cs" />
     <Compile Include="Models\WebspaceAdd.cs" />
     <Compile Include="Models\WebSpaceAddResult.cs" />
     <Compile Include="Models\WebSpaceDel.cs" />

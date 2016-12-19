@@ -65,11 +65,18 @@
             //Console.WriteLine(b.apiResponse.ResponseXmlString);
             //Console.WriteLine(s.webspace.getWebSpace.result.Id);
 
-            var s = client.CreateAlias("konaklirealestate.com", "arkadasim.org", enableWeb:false);
-            var result = s.ToResult();
+            //var s = client.CreateAlias("konaklirealestate.com", "arkadasim.org", enableWeb:false);
+            //var result = s.ToResult();
 
-            Console.WriteLine("Status: {0}", result.status);
-            Console.WriteLine("Message: {0}", result.ErrorText);
+            //Console.WriteLine("Status: {0}", result.status);
+            //Console.WriteLine("Message: {0}", result.ErrorText);
+
+            //var c = client.GetWebSpace("konaklirealestate.com");
+            //var result = c.ToResult();
+
+            //Console.WriteLine("Status: {0}", result.status);
+            //Console.WriteLine("Message: {0}", result.ErrorText);
+
         }
     }
 }
