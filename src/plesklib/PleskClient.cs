@@ -299,7 +299,7 @@
         #endregion
 
         #region Alias
-        public SiteAliasAddPacketResult CreateAlias(int siteId, string name, bool enableWeb = true, bool enableMail = false, bool enableTomcat = false)
+        public SiteAliasAddPacketResult CreateAlias(int siteId, string name, bool enableWeb = true, bool enableMail = false, bool enableTomcat = false, bool seoredirect = false)
         {
             var add = new SiteAliasAddPacket();
             add.siteAlias.createSiteAlias.SiteId = siteId;
@@ -307,11 +307,12 @@
             //add.siteAlias.createSiteAlias.pref.web = enableWeb ? "1" : "0";
             //add.siteAlias.createSiteAlias.pref.mail = enableMail ? "1" : "0";
             //add.siteAlias.createSiteAlias.pref.tomcat = enableTomcat ? "1" : "0";
+            //add.siteAlias.createSiteAlias.pref.seoRedirect = seoredirect ? "1" : "0";
 
             return ExecuteWebRequest<SiteAliasAddPacket, SiteAliasAddPacketResult>(add);
         }
 
-        public SiteAliasAddPacketResult CreateAlias(string name, string aliasName)
+        public SiteAliasAddPacketResult CreateAlias(string name, string aliasName, bool enableWeb = true, bool enableMail = false, bool enableTomcat = false, bool seoredirect = false)
         {
             var currentsite = GetSite(name);
             var currentSiteResult = currentsite.ToResult();
@@ -323,14 +324,15 @@
 
                 return result;
             }
-            
+
             var add = new SiteAliasAddPacket();
             add.siteAlias.createSiteAlias.status = "0"; //0 (alias enabled) 1 (alias disabled) 2 (primary site disabled) 3 (alias disabled, primary site disabled) 8 (alias disabled)
             add.siteAlias.createSiteAlias.SiteId = currentsite.site.receive.result.Id;
-            add.siteAlias.createSiteAlias.AliasName = aliasName;
-            //add.siteAlias.createSiteAlias.pref.web = "1";
-            //add.siteAlias.createSiteAlias.pref.mail = "0";
-            //add.siteAlias.createSiteAlias.pref.tomcat = "0";
+            add.siteAlias.createSiteAlias.AliasName = aliasName;            
+            //add.siteAlias.createSiteAlias.pref.web = enableWeb ? "1" : "0";
+            //add.siteAlias.createSiteAlias.pref.mail = enableMail ? "1" : "0";
+            //add.siteAlias.createSiteAlias.pref.tomcat = enableTomcat ? "1" : "0";
+            //add.siteAlias.createSiteAlias.pref.seoRedirect = seoredirect ? "1" : "0";
 
             return ExecuteWebRequest<SiteAliasAddPacket, SiteAliasAddPacketResult>(add);
         }

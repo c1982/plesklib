@@ -65,7 +65,7 @@
             //Console.WriteLine(b.apiResponse.ResponseXmlString);
             //Console.WriteLine(s.webspace.getWebSpace.result.Id);
 
-            var s = client.CreateAlias("konaklirealestate.com", "arkadasim.org");
+            var s = client.CreateAlias("konaklirealestate.com", "arkadasim.org", enableWeb:false);
             var result = s.ToResult();
 
             Console.WriteLine("Status: {0}", result.status);

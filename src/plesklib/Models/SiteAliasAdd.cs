@@ -5,8 +5,9 @@
     [XmlRoot("packet")]
     public class SiteAliasAddPacket
     {
+
         public SiteAliasAddPacket()
-        {
+        {            
             this.siteAlias = new SiteAliasAddNode();
         }
 
@@ -41,19 +42,25 @@
         [XmlElement("name")]
         public string AliasName { get; set; }
 
+        //[XmlElement("ascii-name")]
+        //public string asciiName { get; set; }
+
         //[XmlElement("pref")]
         //public SiteAliasAddPrefNode pref { get; set; }
     }
 
-    public class SiteAliasAddPrefNode
-    {
-        [XmlElement("web")]
-        public string web { get; set; }
+    //public class SiteAliasAddPrefNode
+    //{
+    //    [XmlElement("web")]
+    //    public string web { get; set; }
 
-        [XmlElement("mail")]
-        public string mail { get; set; }
+    //    [XmlElement("mail")]
+    //    public string mail { get; set; }
 
-        [XmlElement("tomcat")]
-        public string tomcat { get; set; }
-    }
+    //    [XmlElement("tomcat")]
+    //    public string tomcat { get; set; }
+
+    //    [XmlElement("seo-redirect")]
+    //    public string seoRedirect { get; set; }
+    //}
 }
