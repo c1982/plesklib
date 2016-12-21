@@ -5,8 +5,11 @@
     [XmlRoot("packet")]
     public class FtpUserAddResult :IResponseResult
     {
+        private ApiResponse _response;
+
         public FtpUserAddResult()
         {
+            this._response = new ApiResponse();
             this.ftpUser = new FtpUserAddResultFtpUserNode();
         }
 
@@ -15,12 +18,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.ftpUser.add.result = response.ToErrorResult();
+            _response = response;            
         }
-
 
         public ResponseResult ToResult()
         {
+            this.ftpUser.add.result.apiResponse = _response;
             return this.ftpUser.add.result;
         }
     }

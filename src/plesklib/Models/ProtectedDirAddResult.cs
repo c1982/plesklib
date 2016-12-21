@@ -5,8 +5,11 @@
     [XmlRoot("packet")]
     public class ProtectedDirAddResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public ProtectedDirAddResult()
         {
+            this._response = new ApiResponse();
             this.protectedDir = new ProtectedDirProtectedResult();
         }
 
@@ -15,11 +18,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.protectedDir.add.result = response.ToErrorResult();
+            this._response = response;
         }
 
         public ResponseResult ToResult()
         {
+            this.protectedDir.add.result.apiResponse = _response;
             return this.protectedDir.add.result;
         }
     }

@@ -5,8 +5,11 @@
     [XmlRoot("packet")]
     public class DatabaseDelResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public DatabaseDelResult()
         {
+            this._response = new ApiResponse();
             this.database = new DatabaseDelResultDatabaseNode();
         }
 
@@ -15,11 +18,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.database.delDb.result = response.ToErrorResult();
+            this._response = response;
         }
 
         public ResponseResult ToResult()
         {
+            this.database.delDb.result.apiResponse = _response;
             return this.database.delDb.result;
         }
     }

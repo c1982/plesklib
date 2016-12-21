@@ -5,8 +5,11 @@
     [XmlRoot("packet")]
     public class DatabaseUserAddResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public DatabaseUserAddResult()
         {
+            this._response = new ApiResponse();
             this.database = new DatabaseUserAddResultDatabaseNode();
         }
 
@@ -15,11 +18,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.database.addDbUser.result = response.ToErrorResult();
+            this._response = response;
         }
 
         public ResponseResult ToResult()
         {
+            this.database.addDbUser.result.apiResponse = _response;
             return this.database.addDbUser.result;
         }
     }

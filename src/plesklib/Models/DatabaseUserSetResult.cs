@@ -5,21 +5,25 @@
     [XmlRoot("packet")]
     public class DatabaseUserSetResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public DatabaseUserSetResult()
         {
+            this._response = new ApiResponse();
             this.database = new DatabaseUserSetResultDatabaseNode();
-        }
-
-        public void SaveResult(ApiResponse response)
-        {
-            this.database.setDbUser.result = response.ToErrorResult();
         }
 
         [XmlElement("database")]
         public DatabaseUserSetResultDatabaseNode database { get; set; }
+
+        public void SaveResult(ApiResponse response)
+        {
+            this._response = response;
+        }
         
         public ResponseResult ToResult()
         {
+            this.database.setDbUser.result.apiResponse = _response;
             return this.database.setDbUser.result;
         }
     }

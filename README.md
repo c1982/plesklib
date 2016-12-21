@@ -16,9 +16,8 @@ or
 	var client = new PleskClient("192.168.5.5", "admin", "p@assW0rd!");
 	var ipaddress = client.GetIPAddressList().ip.get.result.ipinfo.FirstOrDefault();
 
-	var create = client.CreateWebSpace("domain.com", ipaddress.ipaddress);
-	var result = create.ToResult();
-
+	var result = client.CreateWebSpace("domain.com", ipaddress.ipaddress);
+	
 	Console.WriteLine("Status: {0}", result.status);
 	Console.WriteLine("Message: {0}", result.ErrorText);
 	Console.WriteLine("New Webspace Id: {0}", create.webspace.add.result.Id);
@@ -37,9 +36,8 @@ or
 	list.Add(new HostingProperty() { Name = "asp_dot_net", Value = "false" });
 	list.Add(new HostingProperty() { Name = "cgi", Value = "true" });
 	
-	var create = client.CreateWebSpace("domain.com", ipaddress.ipaddress, list);
-	var result = create.ToResult();
-	
+	var result = client.CreateWebSpace("domain.com", ipaddress.ipaddress, list);
+		
 	Console.WriteLine("Status: {0}", result.status);
 	Console.WriteLine("Message: {0}", result.ErrorText);
 	Console.WriteLine("New Webspace Id: {0}", create.webspace.add.result.Id);
@@ -49,9 +47,8 @@ or
 ```csharp
 	var client = new PleskClient("192.168.5.5", "admin", "p@assW0rd!");
 	
-	var create = client.CreateSubdomain("domain.com", "blog");
-	var result = create.ToResult();
-	
+	var result = client.CreateSubdomain("domain.com", "blog");
+		
 	Console.WriteLine("Status: {0}", result.status);
 	Console.WriteLine("Message: {0}", result.ErrorText);
 	Console.WriteLine("New Subdomain Id: {0}", create.subdomain.add.result.Id);

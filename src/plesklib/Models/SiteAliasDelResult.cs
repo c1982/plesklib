@@ -5,8 +5,11 @@
     [XmlRoot("packet")]
     public class SiteAliasDelResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public SiteAliasDelResult()
         {
+            this._response = new ApiResponse();
             this.siteAlias = new SiteAliasSiteResult();
         }
 
@@ -15,11 +18,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.siteAlias.delete.result = response.ToErrorResult();
+            this._response = response;            
         }
 
         public ResponseResult ToResult()
         {
+            this.siteAlias.delete.result.apiResponse = _response;
             return this.siteAlias.delete.result;
         }
     }

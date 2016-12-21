@@ -1,8 +1,8 @@
 ﻿namespace plesklibTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using plesklib;
-    using plesklib.Models;
+    using maestropanel.plesklib;
+    using maestropanel.plesklib.Models;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;        
     using System.Collections.Generic;
 
     [TestClass]
@@ -153,18 +153,22 @@
         {
             var apiresponse = new ApiResponse();
             apiresponse.Message = "Error Message";
-            apiresponse.Status = false;            
+            apiresponse.Status = false;
+            apiresponse.error = new ApiErrorResponse();
+            apiresponse.error.system.errorcode = 999;
+            apiresponse.error.system.errtext = apiresponse.Message;
+            apiresponse.error.system.status = "error";
 
             object obJResult = new SiteAddResult();
 
             var a = obJResult as IResponseResult;
-            a.SaveResult(apiresponse);            
-            
-            var result = obJResult as SiteAddResult;
+            a.SaveResult(apiresponse);
 
-            Assert.AreEqual(result.site.addResult.result.status, "error");
-            Assert.AreEqual(result.site.addResult.result.ErrorText, apiresponse.Message);
-            Assert.AreEqual(result.site.addResult.result.ErrorCode, 999);            
+            var result = (obJResult as SiteAddResult).ToResult();
+
+            Assert.AreEqual(result.status, "error");
+            Assert.AreEqual(result.ErrorText, apiresponse.Message);
+            Assert.AreEqual(result.ErrorCode, 999);            
         }
 
         [TestMethod]

@@ -5,8 +5,11 @@
     [XmlRoot("packet")]
     public class FtpUserDelResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public FtpUserDelResult()
         {
+            this._response = new ApiResponse();
             this.ftpUser = new FtpUserDelResultFtpUserNode();
         }
        
@@ -15,11 +18,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.ftpUser.del.result = response.ToErrorResult();
+            this._response = response;
         }
 
         public ResponseResult ToResult()
         {
+            this.ftpUser.del.result.apiResponse = _response;
             return this.ftpUser.del.result;
         }
     }

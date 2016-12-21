@@ -174,7 +174,7 @@
         }
 
         #region Webspace
-        public WebSpaceAddResult CreateWebSpace(string name, string ipaddr, string username, string password, List<HostingProperty> properties)
+        public ResponseResult CreateWebSpace(string name, string ipaddr, string username, string password, List<HostingProperty> properties)
         {
             var prop = new List<HostingProperty>();
             prop.Add(new HostingProperty() { Name = "ftp_login", Value = username });
@@ -186,21 +186,21 @@
             var add = new WebspaceAddPacket();
             add.webspace.add.genSetup.name = name;
             add.webspace.add.genSetup.ipaddress = ipaddr;
-            add.webspace.add.hosting.Properties = prop.ToArray();            
+            add.webspace.add.hosting.Properties = prop.ToArray();
 
-            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
         }
 
-        public WebSpaceAddResult CreateWebSpace(string name, string ipaddr)
+        public ResponseResult CreateWebSpace(string name, string ipaddr)
         {
             var add = new WebspaceAddPacket();
             add.webspace.add.genSetup.name = name;
             add.webspace.add.genSetup.ipaddress = ipaddr;
-            
-            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
+
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
         }
 
-        public WebSpaceAddResult CreateWebSpace(string name, string ipaddr, List<HostingProperty> properties)
+        public ResponseResult CreateWebSpace(string name, string ipaddr, List<HostingProperty> properties)
         {
             var prop = new List<HostingProperty>();
             
@@ -210,12 +210,12 @@
             var add = new WebspaceAddPacket();
             add.webspace.add.genSetup.name = name;
             add.webspace.add.genSetup.ipaddress = ipaddr;
-            add.webspace.add.hosting.Properties = prop.ToArray();     
+            add.webspace.add.hosting.Properties = prop.ToArray();
 
-            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
         }
 
-        public WebSpaceAddResult CreateWebSpace(string name, string ipaddr, string planName, List<HostingProperty> properties)
+        public ResponseResult CreateWebSpace(string name, string ipaddr, string planName, List<HostingProperty> properties)
         {
             var prop = new List<HostingProperty>();
             
@@ -228,16 +228,16 @@
             add.webspace.add.genSetup.htype = "vrt_hst";
             add.webspace.add.planName = planName;
             add.webspace.add.hosting.Properties = prop.ToArray();
-            
-            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add);
+
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
         }
 
-        public WebSpaceDelResult DeleteWebSpace(string name)
+        public ResponseResult DeleteWebSpace(string name)
         {
             var del = new WebSpaceDelPacket();
             del.webspace.del.filter.Name = name;
 
-            return ExecuteWebRequest<WebSpaceDelPacket, WebSpaceDelResult>(del);
+            return ExecuteWebRequest<WebSpaceDelPacket, WebSpaceDelResult>(del).ToResult();
         }
 
         public WebSpaceGetResult GetWebSpace(string name)
@@ -247,11 +247,10 @@
 
             return ExecuteWebRequest<WebSpaceGetPacket, WebSpaceGetResult>(getSpace);
         }
-
         #endregion
 
         #region Site (Domain)
-        public SiteAddResult CreateSite(int webspaceId, string name, List<HostingProperty> properties)
+        public ResponseResult CreateSite(int webspaceId, string name, List<HostingProperty> properties)
         {              
             var prop = new List<HostingProperty>();
 
@@ -278,15 +277,15 @@
             add.Site.Add.GenSetup.WebSpaceId = webspaceId;
             add.Site.Add.Hosting.Properties = prop.ToArray();
 
-            return ExecuteWebRequest<SiteAddPacket, SiteAddResult>(add);            
+            return ExecuteWebRequest<SiteAddPacket, SiteAddResult>(add).ToResult();            
         }
 
-        public SiteDelResult DeleteSite(string name)
+        public ResponseResult DeleteSite(string name)
         {
             var del = new SiteDelPacket();
             del.site.del.filter.Name = name;
 
-            return ExecuteWebRequest<SiteDelPacket, SiteDelResult>(del);
+            return ExecuteWebRequest<SiteDelPacket, SiteDelResult>(del).ToResult();
         }
 
         public SiteGetResult GetSite(string name)
@@ -299,7 +298,7 @@
         #endregion
 
         #region Alias
-        public SiteAliasAddPacketResult CreateAlias(int siteId, string name, bool enableWeb = true, bool enableMail = false, bool enableTomcat = false, bool seoredirect = false)
+        public ResponseResult CreateAlias(int siteId, string name, bool enableWeb = true, bool enableMail = false, bool enableTomcat = false, bool seoredirect = false)
         {
             var add = new SiteAliasAddPacket();
             add.siteAlias.createSiteAlias.SiteId = siteId;
@@ -309,21 +308,16 @@
             //add.siteAlias.createSiteAlias.pref.tomcat = enableTomcat ? "1" : "0";
             //add.siteAlias.createSiteAlias.pref.seoRedirect = seoredirect ? "1" : "0";
 
-            return ExecuteWebRequest<SiteAliasAddPacket, SiteAliasAddPacketResult>(add);
+            return ExecuteWebRequest<SiteAliasAddPacket, SiteAliasAddPacketResult>(add).ToResult();
         }
 
-        public SiteAliasAddPacketResult CreateAlias(string name, string aliasName, bool enableWeb = true, bool enableMail = false, bool enableTomcat = false, bool seoredirect = false)
+        public ResponseResult CreateAlias(string name, string aliasName, bool enableWeb = true, bool enableMail = false, bool enableTomcat = false, bool seoredirect = false)
         {
             var currentsite = GetSite(name);
             var currentSiteResult = currentsite.ToResult();
 
-            if (currentSiteResult.status != STATUS_OK)
-            {
-                var result = new SiteAliasAddPacketResult();
-                result.siteAlias.create.result = currentSiteResult;
-
-                return result;
-            }
+            if (currentSiteResult.status != STATUS_OK)            
+                return currentSiteResult;            
 
             var add = new SiteAliasAddPacket();
             add.siteAlias.createSiteAlias.status = "0"; //0 (alias enabled) 1 (alias disabled) 2 (primary site disabled) 3 (alias disabled, primary site disabled) 8 (alias disabled)
@@ -334,20 +328,20 @@
             //add.siteAlias.createSiteAlias.pref.tomcat = enableTomcat ? "1" : "0";
             //add.siteAlias.createSiteAlias.pref.seoRedirect = seoredirect ? "1" : "0";
 
-            return ExecuteWebRequest<SiteAliasAddPacket, SiteAliasAddPacketResult>(add);
+            return ExecuteWebRequest<SiteAliasAddPacket, SiteAliasAddPacketResult>(add).ToResult();
         }
 
-        public SiteAliasDelResult DeleteAlias(string name)
+        public ResponseResult DeleteAlias(string name)
         {
             var del = new SiteAliasDelPacket();
             del.site.delete.filter.Name = name;
 
-            return ExecuteWebRequest<SiteAliasDelPacket, SiteAliasDelResult>(del);
+            return ExecuteWebRequest<SiteAliasDelPacket, SiteAliasDelResult>(del).ToResult();
         }
         #endregion
 
         #region Subdomain
-        public SubdomainAddResult CreateSubdomain(string parent, string name, string homedir, string ftpusername, string ftppassword, bool ssi = false, bool ssiHtml = false)
+        public ResponseResult CreateSubdomain(string parent, string name, string homedir, string ftpusername, string ftppassword, bool ssi = false, bool ssiHtml = false)
         {
             var add = new SubdomainAddPacket();
             add.subdomain.add.parentName = parent;
@@ -358,7 +352,7 @@
             add.subdomain.add.ssi.Value = ssi ? "true" : "false";
             add.subdomain.add.ssiHtml.Value = ssiHtml ? "true" : "false";
 
-            return ExecuteWebRequest<SubdomainAddPacket, SubdomainAddResult>(add);
+            return ExecuteWebRequest<SubdomainAddPacket, SubdomainAddResult>(add).ToResult();
         }
 
         /// <summary>
@@ -367,36 +361,36 @@
         /// <param name="parent">domain.com</param>
         /// <param name="name">sample</param>
         /// <returns></returns>
-        public SubdomainAddResult CreateSubdomain(string parent, string name)
+        public ResponseResult CreateSubdomain(string parent, string name)
         {
             var add = new Subdomain2AddPacket();
             add.subdomain.add.parentName = parent;
             add.subdomain.add.subdomainName = name;
 
-            return ExecuteWebRequest<Subdomain2AddPacket, SubdomainAddResult>(add);
+            return ExecuteWebRequest<Subdomain2AddPacket, SubdomainAddResult>(add).ToResult();
         }
 
-        public SubdomainAddResult CreateSubdomain(string parent, string name, string homedir)
+        public ResponseResult CreateSubdomain(string parent, string name, string homedir)
         {
             var add = new Subdomain2AddPacket();
             add.subdomain.add.parentName = parent;
             add.subdomain.add.subdomainName = name;
             add.subdomain.add.home = homedir;
 
-            return ExecuteWebRequest<Subdomain2AddPacket, SubdomainAddResult>(add);
+            return ExecuteWebRequest<Subdomain2AddPacket, SubdomainAddResult>(add).ToResult();
         }
-                
-        public SubdomainDeleteResult DeleteSubdomain(string name)
+
+        public ResponseResult DeleteSubdomain(string name)
         {
             var del = new SubdomainDeletePacket();
             del.subdomain.del.filter.Name = name;
 
-            return ExecuteWebRequest<SubdomainDeletePacket, SubdomainDeleteResult>(del);
+            return ExecuteWebRequest<SubdomainDeletePacket, SubdomainDeleteResult>(del).ToResult();
         }
         #endregion
 
         #region Protected Dir
-        public ProtectedDirAddResult CreateProtectedDir(int siteId, string name, string headerText, 
+        public ResponseResult CreateProtectedDir(int siteId, string name, string headerText, 
                                                                     bool ssl = false, bool nonssl = false, bool cgi = false)
         {
             if (String.IsNullOrEmpty(headerText))
@@ -410,10 +404,10 @@
             add.protectedDir.add.location.ssl.Value = ssl ? "true" : "false";
             add.protectedDir.add.location.nonssl.Value = nonssl ? "true" : "false";
 
-            return ExecuteWebRequest<ProtectedDirAddPacket, ProtectedDirAddResult>(add);
+            return ExecuteWebRequest<ProtectedDirAddPacket, ProtectedDirAddResult>(add).ToResult();
         }
 
-        public ProtectedDirAddUserResult CreateProtectedDirUser(int pdid, string username, string password, string passwordType = "plain")
+        public ResponseResult CreateProtectedDirUser(int pdid, string username, string password, string passwordType = "plain")
         {
             var add = new ProtectedDirAddUserPacket();
             add.protectedDir.addUser.Id = pdid;
@@ -421,12 +415,12 @@
             add.protectedDir.addUser.password = password;
             add.protectedDir.addUser.passwordType = passwordType;
 
-            return ExecuteWebRequest<ProtectedDirAddUserPacket, ProtectedDirAddUserResult>(add);
+            return ExecuteWebRequest<ProtectedDirAddUserPacket, ProtectedDirAddUserResult>(add).ToResult();
         }
         #endregion
 
         #region Ftp Account
-        public FtpUserAddResult AddFtpAccount(string name, string username, string password, string home, int quota)
+        public ResponseResult AddFtpAccount(string name, string username, string password, string home, int quota)
         {
             var add = new FtpUserAddPacket();
             add.ftpUser.add.wespacename = name;
@@ -435,16 +429,16 @@
             add.ftpUser.add.home = home;
             add.ftpUser.add.quota = quota;
 
-            return ExecuteWebRequest<FtpUserAddPacket, FtpUserAddResult>(add);
+            return ExecuteWebRequest<FtpUserAddPacket, FtpUserAddResult>(add).ToResult();
         }
 
-        public FtpUserDelResult DeleteFtpAccount(string name, string username)
+        public ResponseResult DeleteFtpAccount(string name, string username)
         {
             var del = new FtpUserDelPacket();
             del.ftpUser.del.filter.Name = username;
             del.ftpUser.del.filter.webspaceName = name;
 
-            return ExecuteWebRequest<FtpUserDelPacket, FtpUserDelResult>(del);
+            return ExecuteWebRequest<FtpUserDelPacket, FtpUserDelResult>(del).ToResult();
         }
         #endregion
 
@@ -459,13 +453,13 @@
         #endregion
 
         #region Database
-        public DatabaseAddResult CreateDatabase(string name, string databaseName, string databaseType)
+        public ResponseResult CreateDatabase(string name, string databaseName, string databaseType)
         {
             var add = new DatabaseAddPacket();
             add.database.add.name = databaseName;
             add.database.add.type = databaseType;
 
-            return ExecuteWebRequest<DatabaseAddPacket, DatabaseAddResult>(add);
+            return ExecuteWebRequest<DatabaseAddPacket, DatabaseAddResult>(add).ToResult();
         }
 
         public DatabaseGetResult GetDatabaseList(string name)
@@ -476,10 +470,10 @@
             return ExecuteWebRequest<DatabaseGetPacket, DatabaseGetResult>(getDb);
         }
 
-        public DatabaseDelResult DeleteDatabase(string name, string databaseName)
+        public ResponseResult DeleteDatabase(string name, string databaseName)
         {
-            var result = new DatabaseDelResult();
-            result.database.delDb.result.status = STATUS_ERROR;
+            var result = new ResponseResult();
+            result.status = STATUS_ERROR;
 
             var list = GetDatabaseList(name);
 
@@ -492,33 +486,33 @@
                     var del = new DatabaseDelPacket();
                     del.database.del.filter.dbid = currentDb.result.Id;
 
-                    result = ExecuteWebRequest<DatabaseDelPacket, DatabaseDelResult>(del);
+                    result = ExecuteWebRequest<DatabaseDelPacket, DatabaseDelResult>(del).ToResult();
                 }
                 else
                 {
-                    result.database.delDb.result.ErrorText = "Database not found in this domain";
-                    result.database.delDb.result.ErrorCode = 999;
+                    result.ErrorText = "Database not found";
+                    result.ErrorCode = 999;
                 }
             }
             else
             {                                
-                result.database.delDb.result.ErrorText = "No databases in this domain";                
-                result.database.delDb.result.ErrorCode = 999;
+                result.ErrorText = "No databases in this domain";                
+                result.ErrorCode = 999;
             }
 
             return result;
 
         }
 
-        public DatabaseUserAddResult CreateDatabaseUser(string name, string databaseName, string username, string password, string passwordType = "plain", string role ="readWrite")
+        public ResponseResult CreateDatabaseUser(string name, string databaseName, string username, string password, string passwordType = "plain", string role = "readWrite")
         {
-            var result = new DatabaseUserAddResult();
+            var result = new ResponseResult();
             var list = GetDatabaseList(name);
 
             if (!list.databaseList.Any())
             {
-                result.database.addDbUser.result.ErrorText = "No databases in this domain";
-                result.database.addDbUser.result.ErrorCode = 999;
+                result.ErrorText = "No databases in this domain";
+                result.ErrorCode = 999;
 
                 return result;
             }
@@ -527,8 +521,8 @@
 
             if (currentDb == null)
             {
-                result.database.addDbUser.result.ErrorText = "Database not found in this domain";
-                result.database.addDbUser.result.ErrorCode = 999;
+                result.ErrorText = "Database not found in this domain";
+                result.ErrorCode = 999;
 
                 return result;
             }
@@ -542,7 +536,7 @@
             add.database.addUser.passwordType = passwordType;
             add.database.addUser.role = role;
 
-            return ExecuteWebRequest<DatabaseUserAddPacket, DatabaseUserAddResult>(add);
+            return ExecuteWebRequest<DatabaseUserAddPacket, DatabaseUserAddResult>(add).ToResult();
         }
 
         public DatabaseUserGetResult GetDatabaseUserList(string name, string databaseName)
@@ -564,18 +558,18 @@
             
             return ExecuteWebRequest<DatabaseUserGetPacket, DatabaseUserGetResult>(getuser);
         }
-        
-        public DatabaseUserDelResult DeleteDatabaseUser(string name, string databaseName, string username)
+
+        public ResponseResult DeleteDatabaseUser(string name, string databaseName, string username)
         {
-            var result = new DatabaseUserDelResult();
+            var result = new ResponseResult();
 
             var list = GetDatabaseUserList(name, databaseName);
 
             if (!list.database.users.Any())
             {
-                result.database.del.result.status = "error";
-                result.database.del.result.ErrorCode = 999;
-                result.database.del.result.ErrorText = "No users in this database";
+                result.status = "error";
+                result.ErrorCode = 999;
+                result.ErrorText = "No users in this database";
 
                 return result;
             }
@@ -584,9 +578,9 @@
 
             if (currentUser == null)
             {
-                result.database.del.result.status = "error";
-                result.database.del.result.ErrorCode = 999;
-                result.database.del.result.ErrorText = "User not found";
+                result.status = "error";
+                result.ErrorCode = 999;
+                result.ErrorText = "User not found";
 
                 return result;
             }
@@ -595,20 +589,19 @@
             deleteUser.database.del.filter.databaseId = currentUser.databaseId;
             deleteUser.database.del.filter.userId = currentUser.Id;
 
-            return ExecuteWebRequest<DatabaseUserDelPacket, DatabaseUserDelResult>(deleteUser);
+            return ExecuteWebRequest<DatabaseUserDelPacket, DatabaseUserDelResult>(deleteUser).ToResult();
         }
 
-        public DatabaseUserSetResult ChangeDatabaseUserPassword(string name, string databaseName, string username, string newpassword)
+        public ResponseResult ChangeDatabaseUserPassword(string name, string databaseName, string username, string newpassword)
         {
-            var result = new DatabaseUserSetResult();
-
+            var result = new ResponseResult();
             var list = GetDatabaseUserList(name, databaseName);
 
             if (!list.database.users.Any())
-            {
-                result.database.setDbUser.result.status = STATUS_ERROR;
-                result.database.setDbUser.result.ErrorCode = 999;
-                result.database.setDbUser.result.ErrorText = "No users in this database";
+            {                
+                result.status = STATUS_ERROR;
+                result.ErrorCode = 999;
+                result.ErrorText = "No users in this database";
 
                 return result;
             }
@@ -617,9 +610,9 @@
 
             if (currentUser == null)
             {
-                result.database.setDbUser.result.status = STATUS_ERROR;
-                result.database.setDbUser.result.ErrorCode = 999;
-                result.database.setDbUser.result.ErrorText = "User not found";
+                result.status = STATUS_ERROR;
+                result.ErrorCode = 999;
+                result.ErrorText = "User not found";
 
                 return result;
             }
@@ -628,50 +621,40 @@
             changePass.database.setDbUser.databaseUserId = currentUser.Id;
             changePass.database.setDbUser.password = newpassword;
 
-            return ExecuteWebRequest<DatabaseUserSetPacket, DatabaseUserSetResult>(changePass);
+            return ExecuteWebRequest<DatabaseUserSetPacket, DatabaseUserSetResult>(changePass).ToResult();
         }
         #endregion
 
         #region Virtual Directory
-        public VirtualDirectoryAddResult CreateVirtualDirectory(string name, string virtualDirectoryName, string physichalPath ="")
+        public ResponseResult CreateVirtualDirectory(string name, string virtualDirectoryName, string physichalPath = "")
         {
             var currentsite = GetSite(name);
             var currentSiteResult = currentsite.ToResult();
 
-            if (currentSiteResult.status != STATUS_OK)
-            {
-                var result = new VirtualDirectoryAddResult();
-                result.virtdir.create.result = currentSiteResult;
-
-                return result;
-            }
+            if (currentSiteResult.status != STATUS_OK)            
+                return currentSiteResult;            
 
             var addVirt = new VirtualDirectoryAddPacket();
             addVirt.virt.siteId = currentsite.site.receive.result.Id;
             addVirt.virt.virtualDirectoryName = virtualDirectoryName;
             addVirt.virt.properties.readlPath = String.IsNullOrEmpty(physichalPath) ? virtualDirectoryName : physichalPath;
 
-            return ExecuteWebRequest<VirtualDirectoryAddPacket, VirtualDirectoryAddResult>(addVirt);
+            return ExecuteWebRequest<VirtualDirectoryAddPacket, VirtualDirectoryAddResult>(addVirt).ToResult();
         }
 
-        public VirtualDirectoryDelResult DeleteVirtualDirectory(string name, string virtualDirectoryName)
+        public ResponseResult DeleteVirtualDirectory(string name, string virtualDirectoryName)
         {
             var currentsite = GetSite(name);
             var currentSiteResult = currentsite.ToResult();
 
-            if (currentSiteResult.status != STATUS_OK)
-            {
-                var result = new VirtualDirectoryDelResult();
-                result.virtdir.remove.result = currentSiteResult;
-
-                return result;
-            }
+            if (currentSiteResult.status != STATUS_OK)            
+                return currentSiteResult;            
 
             var delVirt = new VirtualDirectoryDelPacket();
             delVirt.virtdir.remove.siteId = currentsite.site.receive.result.Id;
             delVirt.virtdir.remove.virtualDirectoryName = virtualDirectoryName;
 
-            return ExecuteWebRequest<VirtualDirectoryDelPacket, VirtualDirectoryDelResult>(delVirt);
+            return ExecuteWebRequest<VirtualDirectoryDelPacket, VirtualDirectoryDelResult>(delVirt).ToResult();
         }
         #endregion
 

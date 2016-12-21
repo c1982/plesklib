@@ -16,11 +16,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.virtdir.create.result = response.ToErrorResult();
+            this._response = response;
         }
 
         public ResponseResult ToResult()
-        {            
+        {
+            this.virtdir.create.result.apiResponse = _response;
             return this.virtdir.create.result;
         }
     }

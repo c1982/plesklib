@@ -5,19 +5,22 @@
     [XmlRoot("packet")]
     public class VirtualDirectoryDelResult : IResponseResult
     {
+        private ApiResponse _response;
 
         public VirtualDirectoryDelResult()
         {
+            this._response = new ApiResponse();
             this.virtdir = new VirtualDirectoryDelVirtDirNode();
         }
 
         public void SaveResult(ApiResponse response)
         {
-            this.virtdir.remove.result.apiResponse = response;
+            this._response = response;
         }
 
         public ResponseResult ToResult()
         {
+            this.virtdir.remove.result.apiResponse = _response;
             return this.virtdir.remove.result;
         }
 

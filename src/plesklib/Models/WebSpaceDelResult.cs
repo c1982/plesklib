@@ -5,8 +5,11 @@
     [XmlRoot("packet")]
     public class WebSpaceDelResult :IResponseResult
     {
+        private ApiResponse _response;
+
         public WebSpaceDelResult()
         {
+            this._response = new ApiResponse();
             this.webspace = new WebSpaceDelResultWebSpaceNode();
         }
 
@@ -15,13 +18,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.webspace.del.result.status = response.Status ? "ok" : "error";
-            this.webspace.del.result.ErrorText = response.Message;
-            this.webspace.del.result.ErrorCode = 999;
+            this._response = response;
         }
 
         public ResponseResult ToResult()
         {
+            this.webspace.del.result.apiResponse = _response;
             return this.webspace.del.result;
         }
     }

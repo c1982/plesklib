@@ -10,7 +10,7 @@
         static void Main(string[] args)
         {
             //var client = new PleskClient("192.168.2.136", "admin", "Osman12!");
-            var client = new PleskClient("94.73.171.25", "admin", "00A11b00c!");
+            var client = new PleskClient("94.73.171.25", "admin", "Delidana12!");
 
             //var result = client.CreateSite("testdom.com", 2, true, true, true, true, false, false, false, false, false, false, false, "none", true, false);
 
@@ -65,11 +65,16 @@
             //Console.WriteLine(b.apiResponse.ResponseXmlString);
             //Console.WriteLine(s.webspace.getWebSpace.result.Id);
 
-            var s = client.CreateAlias("konaklirealestate.com", "arkadasim.org", enableWeb:false);
-            var result = s.ToResult();
+            //var s = client.CreateAlias("konaklirealestate.com", "arkadasim.org", enableWeb:false);
+            //var result = s.ToResult();
 
-            Console.WriteLine("Status: {0}", result.status);
-            Console.WriteLine("Message: {0}", result.ErrorText);
+            //Console.WriteLine("Status: {0}", result.status);
+            //Console.WriteLine("Message: {0}", result.ErrorText);
+
+            var e = client.AddFtpAccount("konaklirealestate.com", "deneme1", "Osmn12!", "/", 100);
+            
+            Console.WriteLine("Status: {0}", e.status);
+            Console.WriteLine("Message: {0}", e.ErrorText);
         }
     }
 }

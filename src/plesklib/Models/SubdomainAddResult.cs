@@ -5,8 +5,11 @@
     [XmlRoot("packet")]
     public class SubdomainAddResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public SubdomainAddResult()
         {
+            this._response = new ApiResponse();
             this.subdomain = new SubdomainAddSubdomainResult();
         }
 
@@ -15,11 +18,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.subdomain.add.result = response.ToErrorResult();
+            this._response = response;
         }
 
         public ResponseResult ToResult()
         {
+            this.subdomain.add.result.apiResponse = _response;
             return this.subdomain.add.result;
         }
     }

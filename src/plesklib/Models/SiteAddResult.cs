@@ -5,8 +5,11 @@
     [XmlRoot("packet")]
     public class SiteAddResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public SiteAddResult()
         {
+            this._response = new ApiResponse();
             this.site = new SiteResult();
         }
 
@@ -15,12 +18,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.site.addResult.result = response.ToErrorResult();
+            this._response = response;
         }
-
 
         public ResponseResult ToResult()
         {
+            this.site.addResult.result.apiResponse = _response;
             return this.site.addResult.result;
         }
     }

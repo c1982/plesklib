@@ -1,8 +1,8 @@
 ﻿namespace plesklibTest
 {
     using JustFakeIt;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using plesklib;
+    using maestropanel.plesklib;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;    
     using System.Diagnostics;
 
     [TestClass]
@@ -85,11 +85,11 @@
 
                 var result = client.CreateSite(1, "domain.com", null);
 
-                Debug.WriteLine(result.site.addResult.result.ErrorText);
+                Debug.WriteLine(result.ErrorText);
 
-                Assert.AreEqual(result.site.addResult.result.status, "ok");
-                Assert.AreEqual(result.site.addResult.result.Id, "57");
-                Assert.AreEqual(result.site.addResult.result.guid, "ed5de3a1-2d73-4dfa-9cee-4609afaccf6a");
+                Assert.AreEqual(result.status, "ok");
+                Assert.AreEqual(result.Id, "57");
+                Assert.AreEqual(result.guid, "ed5de3a1-2d73-4dfa-9cee-4609afaccf6a");
             }
         }
 
@@ -104,11 +104,11 @@
 
                 var result = client.CreateWebSpace("domain.com", "192.168.0.1", "ftplogin", "password", null);
 
-                Debug.WriteLine(result.webspace.add.result.ErrorText);
+                Debug.WriteLine(result.ErrorText);
 
-                Assert.AreEqual(result.webspace.add.result.status, "ok");
-                Assert.AreEqual(result.webspace.add.result.Id, "4");
-                Assert.AreEqual(result.webspace.add.result.guid, "5ff343c1-a40b-4305-8986-2f27c240db7e");
+                Assert.AreEqual(result.status, "ok");
+                Assert.AreEqual(result.Id, "4");
+                Assert.AreEqual(result.guid, "5ff343c1-a40b-4305-8986-2f27c240db7e");
             }
         }
 
@@ -122,8 +122,8 @@
 
                 var result = client.CreateAlias(10, "demo.net");
                 
-                Assert.AreEqual(result.siteAlias.create.result.status, "ok");
-                Assert.AreEqual(result.siteAlias.create.result.Id, "34");                
+                Assert.AreEqual(result.status, "ok");
+                Assert.AreEqual(result.Id, "34");                
             }
         }
 
@@ -136,10 +136,9 @@
                 fakeServer.Start();
 
                 var result = client.GetSite("domain.com");
-
-                Assert.AreEqual(result.site.results.Length, 1);
-                Assert.AreEqual(result.site.results[0].status, "ok");
-                Assert.AreEqual(result.site.results[0].data.getInfo.Name, "sub.ppu12-5.demo.pp.plesk.ru");
+                
+                Assert.AreEqual(result.site.receive.result.status, "ok");
+                Assert.AreEqual(result.site.receive.result.data.getInfo.Name, "sub.ppu12-5.demo.pp.plesk.ru");
             }
         }
     }
