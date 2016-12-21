@@ -5,6 +5,8 @@
     [XmlRoot("packet")]
     public class WebSpaceAddResult : IResponseResult
     {
+        private ApiResponse _response;
+
         public WebSpaceAddResult()
         {
             this.webspace = new WebSpaceAddResultNode();
@@ -15,11 +17,12 @@
 
         public void SaveResult(ApiResponse response)
         {
-            this.webspace.add.result = response.ToErrorResult();
+            this._response = response;            
         }
 
         public ResponseResult ToResult()
         {
+            this.webspace.add.result.apiResponse = _response;
             return this.webspace.add.result;
         }
     }
