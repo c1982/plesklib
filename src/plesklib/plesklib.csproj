@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\EmailAdd.cs" />
     <Compile Include="Models\SiteAliasAdd2.cs" />
     <Compile Include="Models\Subdomain2Add.cs" />
     <Compile Include="Models\DatabaseAdd.cs" />
