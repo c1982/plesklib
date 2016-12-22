@@ -9,6 +9,7 @@
 
         public WebSpaceAddResult()
         {
+            this._response = new ApiResponse();
             this.webspace = new WebSpaceAddResultNode();
         }
 
