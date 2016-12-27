@@ -71,10 +71,18 @@
             //Console.WriteLine("Status: {0}", result.status);
             //Console.WriteLine("Message: {0}", result.ErrorText);
 
-            var e = client.AddFtpAccount("konaklirealestate.com", "deneme1", "Osmn12!", "/", 100);
+            //var e = client.AddFtpAccount("konaklirealestate.com", "deneme1", "Osmn12!", "/", 100);
             
+            //Console.WriteLine("Status: {0}", e.status);
+            //Console.WriteLine("Message: {0}", e.ErrorText);
+
+            //var e = client.GetServicePlans();
+
+            var e = client.CreateCustomer("packet1", "demre", "Osman12!", "aspsrc@gmail.com", "Hakan Akyol", "MaestroPanel", "istanbul avcılar", "00290002390", "239090293", "istanbul", "TR", "23232", "TR");
+
             Console.WriteLine("Status: {0}", e.status);
             Console.WriteLine("Message: {0}", e.ErrorText);
+            
         }
     }
 }

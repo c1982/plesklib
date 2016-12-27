@@ -41,7 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\CustomerAdd.cs" />
+    <Compile Include="Models\CustomerAddResult.cs" />
     <Compile Include="Models\EmailAdd.cs" />
+    <Compile Include="Models\ServicePlanGetResult.cs" />
     <Compile Include="Models\SiteAliasAdd2.cs" />
     <Compile Include="Models\Subdomain2Add.cs" />
     <Compile Include="Models\DatabaseAdd.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="Models\WebSpaceSet.cs" />
     <Compile Include="PleskClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\ServicePlanGet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

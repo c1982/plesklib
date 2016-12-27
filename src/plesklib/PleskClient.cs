@@ -249,6 +249,51 @@
         }
         #endregion
 
+        #region Customers
+        public ResponseResult CreateCustomer(string packageName, string username, string password, string email, string fullName, string company, string address, string phone, string fax, string city, string state, string postalCode,string country)
+        {
+            var plans = GetServicePlans();
+            var package = plans.Where(m => m.name == packageName).FirstOrDefault();
+
+            if (package == null)
+            {
+                var result = new ResponseResult();
+                result.status = "error";
+                result.ErrorText = "Package name not found";
+
+                return result;
+            }
+
+            var add = new CustomerAddPacket();            
+            add.customer.add.info.status = "0";
+            add.customer.add.info.LoginName = username;
+            add.customer.add.info.Password = password;
+            add.customer.add.info.Email = email;
+            add.customer.add.info.PersonalName = fullName;
+            add.customer.add.info.CompanyName = company;
+            add.customer.add.info.Address = address;
+            add.customer.add.info.Phone = phone;
+            add.customer.add.info.PostalCoe = postalCode;
+            add.customer.add.info.State = state;
+            add.customer.add.info.Country = country;            
+            add.customer.add.packageId = package.Id;
+            add.customer.add.info.Fax = fax;
+            add.customer.add.info.City = city;
+            
+            return ExecuteWebRequest<CustomerAddPacket, CustomerAddResult>(add).ToResult();
+        }
+        #endregion
+
+        #region Service Plans
+        public ServicePlanItem[] GetServicePlans()
+        {
+            var recieve = new ServicePlanGetPacket();
+            var result =  ExecuteWebRequest<ServicePlanGetPacket, ServicePlanGetResult>(recieve);
+
+            return result.servicePlan.results.ToArray();
+        }
+        #endregion
+
         #region Site (Domain)
         public ResponseResult CreateSite(int webspaceId, string name, List<HostingProperty> properties)
         {              
