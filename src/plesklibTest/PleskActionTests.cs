@@ -2,7 +2,8 @@
 {
     using JustFakeIt;
     using maestropanel.plesklib;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;    
+    using maestropanel.plesklib.Models;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Diagnostics;
 
     [TestClass]
@@ -140,6 +141,30 @@
                 Assert.AreEqual(result.site.receive.result.status, "ok");
                 Assert.AreEqual(result.site.receive.result.data.getInfo.Name, "sub.ppu12-5.demo.pp.plesk.ru");
             }
+        }
+
+        [TestMethod]
+        public void Customer_Add_Test()
+        {
+            var add = new CustomerAddPacket();            
+            add.customer.add.info.status = "0";
+            add.customer.add.info.LoginName = "usernamer";
+            add.customer.add.info.Password = "password";
+            add.customer.add.info.Email = "email";
+            add.customer.add.info.PersonalName = "fullName";
+            add.customer.add.info.CompanyName = "company";
+            add.customer.add.info.Address = "address";
+            add.customer.add.info.Phone ="phone";
+            add.customer.add.info.PostalCoe = "postalCode";
+            add.customer.add.info.State = "state";
+            add.customer.add.info.Country = "country";            
+            //add.customer.add.packageId = 1;
+            add.customer.add.info.Fax = "fax";
+            add.customer.add.info.City = "city";
+
+            var result = client.SerializeObjectToXmlString<CustomerAddPacket>(add);
+
+            Assert.IsNotNull(result);
         }
     }
 }

@@ -54,6 +54,9 @@
 
         [XmlElement("htype")]
         public string htype  { get; set; }
+
+        [XmlElement("owner-login")]
+        public string OwnerLogin { get; set; }
     }
 
     public class WebSpaceHostingNode

@@ -1,5 +1,8 @@
 ﻿namespace maestropanel.plesklib.Models
 {
+    using System.Xml.Serialization;
+
+    [XmlRoot("packet")]
     public class CustomerAddResult  :IResponseResult
     {
         private ApiResponse _response;
@@ -21,6 +24,8 @@
             return this.customer.add.result;
         }
 
+
+        [XmlElement("customer")]
         public CustomerAddResultCustomerNode customer { get; set; }
     }
 
@@ -31,6 +36,7 @@
             this.add = new CustomerAddResultAddNode();
         }
 
+        [XmlElement("add")]
         public CustomerAddResultAddNode add { get; set; }
     }
 
@@ -41,6 +47,7 @@
             this.result = new ResponseResult();
         }
 
+        [XmlElement("result")]
         public ResponseResult result { get; set; }
 
     }

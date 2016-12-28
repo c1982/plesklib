@@ -142,9 +142,16 @@
 
                 if(String.IsNullOrEmpty(response.error.system.status)) //No Error
                 {
-                    result = DeSerializeObject<Toutput>(response.ResponseXmlString);                    
-                    response.Message = "Api communication is successfully";
-                    response.Status = true;
+                    result = DeSerializeObject<Toutput>(response.ResponseXmlString);
+                    if (result != null)
+                    {
+                        response.Message = "Api communication is successfully";
+                        response.Status = true;
+                    }
+                    else
+                    {
+                        response.Message = "Result cannot deserialize";                        
+                    }
                 }                
             }
             catch (Exception ex)
@@ -174,7 +181,7 @@
         }
 
         #region Webspace
-        public ResponseResult CreateWebSpace(string name, string ipaddr, string username, string password, List<HostingProperty> properties)
+        public ResponseResult CreateWebSpace(string owner, string name, string ipaddr, string username, string password, List<HostingProperty> properties)
         {
             var prop = new List<HostingProperty>();
             prop.Add(new HostingProperty() { Name = "ftp_login", Value = username });
@@ -186,10 +193,11 @@
             var add = new WebspaceAddPacket();
             add.webspace.add.genSetup.name = name;
             add.webspace.add.genSetup.ipaddress = ipaddr;
+            add.webspace.add.genSetup.OwnerLogin = owner;
             add.webspace.add.hosting.Properties = prop.ToArray();
-
+            
             return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
-        }
+        }        
 
         public ResponseResult CreateWebSpace(string name, string ipaddr)
         {
@@ -232,6 +240,23 @@
             return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
         }
 
+        public ResponseResult CreateWebSpace(string customerName, string name, string ipaddr, string planName, string ftpusername, string ftppassword)
+        {
+            var prop = new List<HostingProperty>();
+            prop.Add(new HostingProperty() { Name = "ftp_login", Value = ftpusername });
+            prop.Add(new HostingProperty() { Name = "ftp_password", Value = ftppassword });
+
+            var add = new WebspaceAddPacket();
+            add.webspace.add.genSetup.name = name;
+            add.webspace.add.genSetup.ipaddress = ipaddr;
+            add.webspace.add.genSetup.htype = "vrt_hst";
+            add.webspace.add.genSetup.OwnerLogin = customerName;
+            add.webspace.add.planName = planName;
+            add.webspace.add.hosting.Properties = prop.ToArray();
+            
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
+        }
+
         public ResponseResult DeleteWebSpace(string name)
         {
             var del = new WebSpaceDelPacket();
@@ -250,19 +275,19 @@
         #endregion
 
         #region Customers
-        public ResponseResult CreateCustomer(string packageName, string username, string password, string email, string fullName, string company, string address, string phone, string fax, string city, string state, string postalCode,string country)
+        public ResponseResult CreateCustomer(string username, string password, string email, string fullName, string company, string address, string phone, string fax, string city, string state, string postalCode,string country)
         {
-            var plans = GetServicePlans();
-            var package = plans.Where(m => m.name == packageName).FirstOrDefault();
+            //var plans = GetServicePlans();
+            //var package = plans.Where(m => m.name == packageName).FirstOrDefault();
 
-            if (package == null)
-            {
-                var result = new ResponseResult();
-                result.status = "error";
-                result.ErrorText = "Package name not found";
+            //if (package == null)
+            //{
+            //    var result = new ResponseResult();
+            //    result.status = "error";
+            //    result.ErrorText = "Package name not found";
 
-                return result;
-            }
+            //    return result;
+            //}
 
             var add = new CustomerAddPacket();            
             add.customer.add.info.status = "0";
@@ -275,10 +300,9 @@
             add.customer.add.info.Phone = phone;
             add.customer.add.info.PostalCoe = postalCode;
             add.customer.add.info.State = state;
-            add.customer.add.info.Country = country;            
-            add.customer.add.packageId = package.Id;
+            add.customer.add.info.Country = country;                        
             add.customer.add.info.Fax = fax;
-            add.customer.add.info.City = city;
+            add.customer.add.info.City = city;            
             
             return ExecuteWebRequest<CustomerAddPacket, CustomerAddResult>(add).ToResult();
         }

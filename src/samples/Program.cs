@@ -35,20 +35,17 @@
             //        Console.WriteLine(item.ipaddress);
             //    }
             //}
-            
-            //var list = new List<HostingProperty>();
-            //list.Add(new HostingProperty() { Name = "php", Value = "false" });
-            //list.Add(new HostingProperty() { Name = "ssi", Value = "false" });
-            //list.Add(new HostingProperty() { Name = "asp", Value = "true" });
-            //list.Add(new HostingProperty() { Name = "asp_dot_net", Value = "false" });
-            //list.Add(new HostingProperty() { Name = "cgi", Value = "true" });
 
-            //var result = client.CreateWebSpace("demo3.com", "192.168.2.136", "demo3.com", "Osman12!", list);
+            var list = new List<HostingProperty>();
+            list.Add(new HostingProperty() { Name = "ftp_login", Value = "u123456" });
+            list.Add(new HostingProperty() { Name = "ftp_password", Value = "Delidana12!" });
 
-            //Console.WriteLine(result.webspace.add.result.status);
-            //Console.WriteLine(result.webspace.add.result.ErrorText);
-            //Console.WriteLine(result.webspace.add.result.guid);
-            //Console.WriteLine(result.webspace.add.result.Id);   
+
+            var result = client.CreateWebSpace("demre", "demo4.com", "94.73.171.25","packet1", list);
+
+            Console.WriteLine("Status: {0}", result.status);
+            Console.WriteLine("Message: {0}", result.ErrorText);
+ 
 
             //var cdom = client.GetSite("konaklirealestate.com");
             //var b = cdom.ToResult();
@@ -78,10 +75,10 @@
 
             //var e = client.GetServicePlans();
 
-            var e = client.CreateCustomer("packet1", "demre", "Osman12!", "aspsrc@gmail.com", "Hakan Akyol", "MaestroPanel", "istanbul avcılar", "00290002390", "239090293", "istanbul", "TR", "23232", "TR");
-
-            Console.WriteLine("Status: {0}", e.status);
-            Console.WriteLine("Message: {0}", e.ErrorText);
+            //var e = client.CreateCustomer("demre", "Osman12!", "aspsrc@gmail.com", "Hakan Akyol", "MaestroPanel", "istanbul avcılar", "00290002390", "239090293", "istanbul", "TR", "23232", "TR");
+            
+            
+            
             
         }
     }
