@@ -257,6 +257,18 @@
             return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
         }
 
+        public ResponseResult CreateWebSpace(string customerName, string name, string ipaddr, string planName)
+        {            
+            var add = new WebspaceAddPacket();
+            add.webspace.add.genSetup.name = name;
+            add.webspace.add.genSetup.ipaddress = ipaddr;
+            add.webspace.add.genSetup.htype = "vrt_hst";
+            add.webspace.add.genSetup.OwnerLogin = customerName;
+            add.webspace.add.planName = planName;            
+
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
+        }
+
         public ResponseResult DeleteWebSpace(string name)
         {
             var del = new WebSpaceDelPacket();
