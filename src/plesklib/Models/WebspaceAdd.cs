@@ -69,8 +69,5 @@
         [XmlArray("vrt_hst")]
         [XmlArrayItem("property")]
         public HostingProperty[] Properties{ get; set; }
-
-        //[XmlElement("ip_address")]
-        //public string ipaddress { get; set; }
     }    
 }

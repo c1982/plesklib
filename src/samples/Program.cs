@@ -10,7 +10,7 @@
         static void Main(string[] args)
         {
             //var client = new PleskClient("192.168.2.136", "admin", "Osman12!");
-            var client = new PleskClient("94.73.171.25", "admin", "Delidana12!");
+            
 
             //var result = client.CreateSite("testdom.com", 2, true, true, true, true, false, false, false, false, false, false, false, "none", true, false);
 
@@ -36,16 +36,7 @@
             //    }
             //}
 
-            var list = new List<HostingProperty>();
-            list.Add(new HostingProperty() { Name = "ftp_login", Value = "u123456" });
-            list.Add(new HostingProperty() { Name = "ftp_password", Value = "Delidana12!" });
-
-
-            var result = client.CreateWebSpace("demre", "demo4.com", "94.73.171.25","packet1", list);
-
-            Console.WriteLine("Status: {0}", result.status);
-            Console.WriteLine("Message: {0}", result.ErrorText);
- 
+            
 
             //var cdom = client.GetSite("konaklirealestate.com");
             //var b = cdom.ToResult();

@@ -257,6 +257,27 @@
             return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
         }
 
+        public ResponseResult CreateWebSpace(string customerName, string name, string ipaddr, string planName, string ftpusername, string ftppassword, List<HostingProperty> properties)
+        {
+            var prop = new List<HostingProperty>();
+            prop.Add(new HostingProperty() { Name = "ftp_login", Value = ftpusername });
+            prop.Add(new HostingProperty() { Name = "ftp_password", Value = ftppassword });
+
+
+            if (properties != null)
+                prop.AddRange(properties);
+
+            var add = new WebspaceAddPacket();
+            add.webspace.add.genSetup.name = name;
+            add.webspace.add.genSetup.ipaddress = ipaddr;
+            add.webspace.add.genSetup.htype = "vrt_hst";
+            add.webspace.add.genSetup.OwnerLogin = customerName;
+            add.webspace.add.planName = planName;
+            add.webspace.add.hosting.Properties = prop.ToArray();
+
+            return ExecuteWebRequest<WebspaceAddPacket, WebSpaceAddResult>(add).ToResult();
+        }
+
         public ResponseResult CreateWebSpace(string customerName, string name, string ipaddr, string planName)
         {            
             var add = new WebspaceAddPacket();
