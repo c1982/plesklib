@@ -19,6 +19,11 @@
                                             ErrorText = this.Message, 
                                             apiResponse = this};
         }
+
+        public ApiResponse()
+        {
+            this.error = new ApiErrorResponse();
+        }
     }
 
     [XmlRoot("packet")]

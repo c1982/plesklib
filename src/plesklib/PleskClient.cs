@@ -143,6 +143,7 @@
                 if(String.IsNullOrEmpty(response.error.system.status)) //No Error
                 {
                     result = DeSerializeObject<Toutput>(response.ResponseXmlString);
+
                     if (result != null)
                     {
                         response.Message = "Api communication is successfully";
@@ -156,8 +157,13 @@
             }
             catch (Exception ex)
             {
+                response.Status = false;
                 response.Message = ex.Message;
-                response.MessageDetails = ex.StackTrace;
+                response.MessageDetails = ex.StackTrace;     
+           
+                response.error = new ApiErrorResponse();
+                response.error.system.errtext = ex.Message;
+                response.error.system.status = "error";                         
             }
             
             var output = result as IResponseResult;
