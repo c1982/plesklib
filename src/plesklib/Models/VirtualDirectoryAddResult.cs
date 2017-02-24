@@ -10,6 +10,7 @@
         public VirtualDirectoryAddResult()
         {
             this._response = new ApiResponse();
+            this.virtdir = new VirtualDirectoryAddResultVirtDirNode();
         }
 
         [XmlElement("virtdir")]

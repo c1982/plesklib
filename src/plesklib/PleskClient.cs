@@ -128,7 +128,7 @@
         {
             var response = new ApiResponse();
             response.Status = false;
-
+            
             var result = Activator.CreateInstance(typeof(Toutput));
 
             try
@@ -743,9 +743,9 @@
                 return currentSiteResult;            
 
             var addVirt = new VirtualDirectoryAddPacket();
-            addVirt.virt.siteId = currentsite.site.receive.result.Id;
-            addVirt.virt.virtualDirectoryName = virtualDirectoryName;
-            addVirt.virt.properties.readlPath = String.IsNullOrEmpty(physichalPath) ? virtualDirectoryName : physichalPath;
+            addVirt.virt.create.siteId = currentsite.site.receive.result.Id;
+            addVirt.virt.create.virtualDirectoryName = virtualDirectoryName;
+            addVirt.virt.create.properties.readlPath = String.IsNullOrEmpty(physichalPath) ? virtualDirectoryName : physichalPath;
 
             return ExecuteWebRequest<VirtualDirectoryAddPacket, VirtualDirectoryAddResult>(addVirt).ToResult();
         }

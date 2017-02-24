@@ -7,12 +7,24 @@
     {
         public VirtualDirectoryAddPacket()
         {
-            this.virt = new VirtualDirectoryAddCreateNode();
+            this.virt = new VirtualDirectoryAddVirtNode();
         }
 
         [XmlElement("virtdir")] 
-        public VirtualDirectoryAddCreateNode virt { get; set; }
+        public VirtualDirectoryAddVirtNode virt { get; set; }
     }
+
+
+    public class VirtualDirectoryAddVirtNode
+	{
+        public VirtualDirectoryAddVirtNode()
+        {
+            this.create = new VirtualDirectoryAddCreateNode();
+        }
+
+        [XmlElement("create")] 
+        public VirtualDirectoryAddCreateNode create { get; set; }
+	}
 
     public class VirtualDirectoryAddCreateNode
     {
