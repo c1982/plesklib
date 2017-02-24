@@ -31,17 +31,18 @@
                 return this._response;
             }
             set
-            {
-                this._response = value;
-
+            {                
                 if (value == null)
                     return;
+
+                this._response = value;
 
                 if (!String.IsNullOrEmpty(value.error.system.status))
                 {
                     this.status = value.error.system.status;
                     this.ErrorCode = value.error.system.errorcode;
                     this.ErrorText = value.error.system.errtext;
+
                     return;
                 }
 

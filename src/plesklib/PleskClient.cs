@@ -739,7 +739,7 @@
             var currentsite = GetSite(name);
             var currentSiteResult = currentsite.ToResult();
 
-            if (currentSiteResult.status != STATUS_OK)            
+            if (currentSiteResult.status != STATUS_OK)
                 return currentSiteResult;            
 
             var addVirt = new VirtualDirectoryAddPacket();

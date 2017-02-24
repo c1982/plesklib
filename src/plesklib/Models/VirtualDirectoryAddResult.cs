@@ -6,6 +6,7 @@
     public class VirtualDirectoryAddResult  : IResponseResult
     {
         private ApiResponse _response;
+
         public VirtualDirectoryAddResult()
         {
             this._response = new ApiResponse();
@@ -22,6 +23,7 @@
         public ResponseResult ToResult()
         {
             this.virtdir.create.result.apiResponse = _response;
+
             return this.virtdir.create.result;
         }
     }
