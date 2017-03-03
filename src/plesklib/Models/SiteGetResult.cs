@@ -26,12 +26,12 @@
         {
             if (this._response.Status)
                 return new ResponseResult()
-                {
-                    apiResponse = _response,
-                    ErrorCode = this.site.receive.result.errcode,
-                    ErrorText = this.site.receive.result.errtext,
-                    status = this.site.receive.result.status
-                };
+                                            {
+                                                apiResponse = _response,
+                                                ErrorCode = this.site.receive.result.errcode,
+                                                ErrorText = this.site.receive.result.errtext,
+                                                status = this.site.receive.result.status
+                                            };
             else
                 return this._response.ToErrorResult();
         }

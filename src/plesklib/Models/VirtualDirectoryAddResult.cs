@@ -23,7 +23,7 @@
 
         public ResponseResult ToResult()
         {
-            this.virtdir.create.result.apiResponse = _response;
+            this.virtdir.create.result.apiResponse = this._response;
 
             return this.virtdir.create.result;
         }

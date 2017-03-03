@@ -736,11 +736,11 @@
         #region Virtual Directory
         public ResponseResult CreateVirtualDirectory(string name, string virtualDirectoryName, string physichalPath = "")
         {
-            var currentsite = GetSite(name);
+            var currentsite = GetSite(name);            
             var currentSiteResult = currentsite.ToResult();
 
             if (currentSiteResult.status != STATUS_OK)
-                return currentSiteResult;            
+                return currentSiteResult;         
 
             var addVirt = new VirtualDirectoryAddPacket();
             addVirt.virt.create.siteId = currentsite.site.receive.result.Id;

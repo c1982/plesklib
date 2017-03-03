@@ -103,7 +103,7 @@
                 fakeServer.Expect.Post("/enterprise/control/agent.php", "").Returns(System.Net.HttpStatusCode.OK, WEBSPACE_RESULT);
                 fakeServer.Start();
 
-                var result = client.CreateWebSpace("domain.com", "192.168.0.1", "ftplogin", "password", null);
+                var result = client.CreateWebSpace("domain.com", "192.168.0.1", "ftplogin", "password", "username","password");
 
                 Debug.WriteLine(result.ErrorText);
 
@@ -165,6 +165,23 @@
             var result = client.SerializeObjectToXmlString<CustomerAddPacket>(add);
 
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void Production_Virtual_Directory_Create()
+        {
+            var r = client.CreateVirtualDirectory("medyazeus.com", "/Layouts", "/cgi-bin");
+            
+            Assert.IsNotNull(r);            
+        }
+
+        [TestMethod]
+        public void Production_Get_Site()
+        {
+            var r = client.GetSite("medyazeus.com");
+            
+
+            Assert.IsNotNull(r);      
         }
     }
 }
