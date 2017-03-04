@@ -10,7 +10,7 @@
     {
         public static readonly string HOSTNAME = "localhost";
         public static readonly string USERNAME = "admin";
-        public static readonly string PASSWORD = "ddd!";
+        public static readonly string PASSWORD = "";
 
         private PleskClient client = new PleskClient(HOSTNAME, USERNAME, PASSWORD);
 

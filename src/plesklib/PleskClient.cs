@@ -269,7 +269,6 @@
             prop.Add(new HostingProperty() { Name = "ftp_login", Value = ftpusername });
             prop.Add(new HostingProperty() { Name = "ftp_password", Value = ftppassword });
 
-
             if (properties != null)
                 prop.AddRange(properties);
 

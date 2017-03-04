@@ -31,9 +31,12 @@
                 return this._response;
             }
             set
-            {                
+            {
                 if (value == null)
+                {
+                    this._response = new ApiResponse();
                     return;
+                }
 
                 this._response = value;
 
