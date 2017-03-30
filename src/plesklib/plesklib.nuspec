@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/c1982/plesklib</projectUrl>    
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Plesk .NET Library</description>
-    <releaseNotes>First release of Plesk .Net Class Library</releaseNotes>
+    <releaseNotes>Plesk .Net Class Library</releaseNotes>
     <copyright>Copyright 2016 MaestroPanel</copyright>
     <tags>plesk api client</tags>
   </metadata>

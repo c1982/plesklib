@@ -45,7 +45,27 @@
 
     public class VirtualDirectoryPropertiesNode
     {
+        public VirtualDirectoryPropertiesNode()
+        {
+            application = new VirtualDirectoryApplicationNode();
+        }
+
         [XmlElement("real-path")]
-        public string readlPath { get; set; }        
+        public string readlPath { get; set; }
+
+        [XmlElement("application")]
+        public VirtualDirectoryApplicationNode application { get; set; }
+    }
+
+    public class VirtualDirectoryApplicationNode
+    {
+        [XmlElement("enabled")]
+        public string Enabled { get; set; }
+
+        [XmlElement("parent-paths")]
+        public bool parentPaths  { get; set; }
+
+        [XmlElement("run-in-mta")]
+        public bool RunInMta { get; set; }
     }
 }

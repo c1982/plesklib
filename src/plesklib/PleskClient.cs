@@ -733,18 +733,29 @@
         #endregion
 
         #region Virtual Directory
-        public ResponseResult CreateVirtualDirectory(string name, string virtualDirectoryName, string physichalPath = "")
+        public ResponseResult CreateVirtualDirectory(string name, string virtualDirectoryName, string physichalPath = "", bool convertApplication = false)
         {
-            var currentsite = GetSite(name);            
+            var currentsite = GetSite(name);
             var currentSiteResult = currentsite.ToResult();
 
             if (currentSiteResult.status != STATUS_OK)
-                return currentSiteResult;         
+                return currentSiteResult;
 
             var addVirt = new VirtualDirectoryAddPacket();
             addVirt.virt.create.siteId = currentsite.site.receive.result.Id;
             addVirt.virt.create.virtualDirectoryName = virtualDirectoryName;
             addVirt.virt.create.properties.readlPath = String.IsNullOrEmpty(physichalPath) ? virtualDirectoryName : physichalPath;
+
+            if (convertApplication)
+            {
+                addVirt.virt.create.properties.application.Enabled = String.Empty;
+                addVirt.virt.create.properties.application.parentPaths = true;
+                addVirt.virt.create.properties.application.RunInMta = false;
+            }
+            else
+            {
+                addVirt.virt.create.properties.application = null;
+            }
 
             return ExecuteWebRequest<VirtualDirectoryAddPacket, VirtualDirectoryAddResult>(addVirt).ToResult();
         }
