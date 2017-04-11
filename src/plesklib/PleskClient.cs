@@ -315,17 +315,6 @@
         #region Customers
         public ResponseResult CreateCustomer(string username, string password, string email, string fullName, string company, string address, string phone, string fax, string city, string state, string postalCode,string country)
         {
-            //var plans = GetServicePlans();
-            //var package = plans.Where(m => m.name == packageName).FirstOrDefault();
-
-            //if (package == null)
-            //{
-            //    var result = new ResponseResult();
-            //    result.status = "error";
-            //    result.ErrorText = "Package name not found";
-
-            //    return result;
-            //}
 
             var add = new CustomerAddPacket();            
             add.customer.add.info.status = "0";
@@ -773,6 +762,43 @@
             delVirt.virtdir.remove.virtualDirectoryName = virtualDirectoryName;
 
             return ExecuteWebRequest<VirtualDirectoryDelPacket, VirtualDirectoryDelResult>(delVirt).ToResult();
+        }
+
+        public ResponseResult ChangeVirtualDirecotry(string name, string virtualDirectoryName, bool enableParentPaths)
+        {
+            var currentsite = GetSite(name);
+            var currentSiteResult = currentsite.ToResult();
+
+            if (currentSiteResult.status != STATUS_OK)
+                return currentSiteResult;
+
+            var updateVirt = new VirtualDirectoryUpdatePacket();
+            updateVirt.virtdir.update.Name = virtualDirectoryName;
+            updateVirt.virtdir.update.properties.application.Enabled = "";
+            updateVirt.virtdir.update.SiteId = currentsite.site.receive.result.Id;
+            updateVirt.virtdir.update.properties.application.EnableParenPaths = enableParentPaths;
+            updateVirt.virtdir.update.properties.application.RunInMta = false;
+
+            return ExecuteWebRequest<VirtualDirectoryUpdatePacket, VirtualDirectoryUpdateResult>(updateVirt).ToResult();
+        }
+
+        public ResponseResult SetDefaultDocs(string name, string virtualDirectoryName, string[] docs)
+        {
+            var currentsite = GetSite(name);
+            var currentSiteResult = currentsite.ToResult();
+
+            if (currentSiteResult.status != STATUS_OK)
+                return currentSiteResult;
+
+
+            var updateVirt = new VirtualDirectoryDefaultDocsUpdatePacket();
+            updateVirt.virtdir.update.Name = virtualDirectoryName;
+            updateVirt.virtdir.update.SiteId = currentsite.site.receive.result.Id;
+            updateVirt.virtdir.update.Properties.DefaultDocs.Enabled = "";
+            updateVirt.virtdir.update.Properties.DefaultDocs.Search = docs;
+
+            return ExecuteWebRequest<VirtualDirectoryDefaultDocsUpdatePacket, VirtualDirectoryUpdateResult>(updateVirt).ToResult();
+            
         }
         #endregion
 
